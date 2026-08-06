@@ -1,6 +1,6 @@
 # =====================================================
 # DRIVE – Dengue Risk Intelligence & Visualization Engine
-# Version 3.0 (Bioluminescent Abyss Edition)
+# Version 1.0 (Signature Release)
 # =====================================================
 
 import streamlit as st
@@ -39,22 +39,22 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 # =====================================================
 
 st.set_page_config(
-    page_title="DRIVE – Bioluminescent Abyss",
+    page_title="DRIVE – Dengue Risk Intelligence",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # =====================================================
-# CSS – THE BIOLUMINESCENT ABYSS (SIGNATURE DESIGN)
+# CSS – DEEP CYBER-GLASS (The Signature Theme)
 # =====================================================
 
 st.markdown("""
 <style>
 /* ----- FONTS & ICONS ----- */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=JetBrains+Mono:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=JetBrains+Mono:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
 
-/* ----- RESET & BASE (Deep Abyss) ----- */
+/* ----- RESET & BASE (Deep Space / Cyber) ----- */
 html, body, .stApp {
     background: #060A12 !important;
     margin: 0 !important;
@@ -65,7 +65,7 @@ html, body, .stApp {
     background: radial-gradient(ellipse at 20% 50%, #0B1A2A 0%, #060A12 70%) !important;
 }
 
-/* ---- BIO-LUMINESCENT PARTICLES (CSS Only) ---- */
+/* ---- FLOATING PARTICLES (CSS Backup + Canvas injected later) ---- */
 body::before {
     content: '';
     position: fixed;
@@ -74,21 +74,17 @@ body::before {
         radial-gradient(2px 2px at 20px 30px, #00F0FF, rgba(0,0,0,0)),
         radial-gradient(2px 2px at 40px 70px, #A855F7, rgba(0,0,0,0)),
         radial-gradient(3px 3px at 120px 200px, #2DD4BF, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 90px 40px, #00F0FF, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 300px 500px, #A855F7, rgba(0,0,0,0)),
-        radial-gradient(3px 3px at 600px 100px, #2DD4BF, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 800px 300px, #00F0FF, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 400px 700px, #A855F7, rgba(0,0,0,0));
+        radial-gradient(2px 2px at 90px 40px, #00F0FF, rgba(0,0,0,0));
     background-size: 200px 200px;
     background-repeat: repeat;
-    opacity: 0.4;
+    opacity: 0.3;
     pointer-events: none;
     z-index: 0;
     animation: driftParticles 30s linear infinite;
 }
 @keyframes driftParticles {
     0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-50px, -30px) scale(1.2); }
+    100% { transform: translate(-40px, -20px) scale(1.1); }
 }
 
 /* ---- PULSING SONAR (Hero Background) ---- */
@@ -155,8 +151,7 @@ section.main > div {
     border-color: rgba(168, 85, 247, 0.3);
     box-shadow: 0 0 60px rgba(168, 85, 247, 0.1);
 }
-
-/* Holographic scanline on hero */
+/* Scanline overlay */
 .glass-hero::before {
     content: '';
     position: absolute;
@@ -187,14 +182,15 @@ section.main > div {
     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.05);
 }
 
-/* ----- TYPOGRAPHY (Holographic) ----- */
+/* ----- TYPOGRAPHY (Cyber / Holographic) ----- */
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     font-family: 'JetBrains Mono', 'Inter', monospace !important;
     color: #E2F0FA !important;
     font-weight: 400 !important;
     letter-spacing: 1px !important;
 }
-p, li, .stMarkdown {
+p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
     line-height: 1.7;
     color: #A0B8CC;
 }
@@ -236,6 +232,7 @@ p, li, .stMarkdown {
     align-items: center;
     gap: 0.6rem;
     text-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+    font-family: 'JetBrains Mono', monospace !important;
 }
 .section-title i {
     color: #A855F7;
@@ -248,7 +245,7 @@ p, li, .stMarkdown {
     margin-bottom: 1.5rem !important;
 }
 
-/* ----- SIDEBAR (Abyss Panel) ----- */
+/* ----- SIDEBAR (Glass Panel) ----- */
 [data-testid="stSidebar"] {
     background: rgba(6, 10, 18, 0.9) !important;
     backdrop-filter: blur(24px) !important;
@@ -265,7 +262,7 @@ p, li, .stMarkdown {
     border-color: #00F0FF;
 }
 
-/* ----- METRIC PILLS (Bioluminescent) ----- */
+/* ----- METRIC PILLS (Glowing Badges) ----- */
 .metric-pill {
     display: inline-block;
     background: rgba(0, 240, 255, 0.04);
@@ -296,7 +293,7 @@ p, li, .stMarkdown {
     margin-right: 6px;
 }
 
-/* Status Badge (Deep Pulse) */
+/* Status Badge (Pulse) */
 .status-badge {
     display: inline-block;
     background: rgba(0, 240, 255, 0.08);
@@ -309,6 +306,7 @@ p, li, .stMarkdown {
     letter-spacing: 2px;
     backdrop-filter: blur(4px);
     text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
 }
 .status-badge .dot {
     display: inline-block;
@@ -325,7 +323,7 @@ p, li, .stMarkdown {
     50% { opacity: 0.2; box-shadow: 0 0 5px #00F0FF; }
 }
 
-/* ----- BUTTONS (Neon Abyss) ----- */
+/* ----- BUTTONS (Neon) ----- */
 .stButton > button {
     background: linear-gradient(135deg, #00F0FF, #A855F7) !important;
     border: none !important;
@@ -404,7 +402,28 @@ p, li, .stMarkdown {
     background: rgba(0, 240, 255, 0.1) !important;
 }
 
-/* ----- SCROLLBAR (Bioluminescent) ----- */
+/* ----- METRIC CARDS (Override Streamlit) ----- */
+.stMetric {
+    background: rgba(6, 10, 18, 0.5) !important;
+    border: 1px solid rgba(0, 240, 255, 0.1) !important;
+    border-radius: 16px !important;
+    padding: 12px !important;
+    backdrop-filter: blur(8px) !important;
+}
+.stMetric label {
+    color: #6A8CA0 !important;
+    font-weight: 400 !important;
+}
+.stMetric .stMetricValue {
+    color: #00F0FF !important;
+    font-family: 'Orbitron', sans-serif !important;
+    font-weight: 800 !important;
+}
+.stMetric .stMetricDelta {
+    color: #2DD4BF !important;
+}
+
+/* ----- SCROLLBAR (Cyan/Purple) ----- */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -420,7 +439,7 @@ p, li, .stMarkdown {
     background: linear-gradient(180deg, #A855F7, #2DD4BF);
 }
 
-/* ----- FOOTER (Deep Mantra) ----- */
+/* ----- FOOTER (Clean) ----- */
 .footer {
     text-align: center;
     padding: 30px 0 20px;
@@ -450,7 +469,7 @@ p, li, .stMarkdown {
     .metric-pill { font-size: 0.65rem !important; padding: 4px 12px !important; }
     .stFoliumMap { height: 350px !important; }
     [data-testid="stSidebar"] { min-width: 0px !important; max-width: 100% !important; }
-    section.main::before, section.main::after { display: none; } /* Save mobile performance */
+    section.main::before, section.main::after { display: none; }
 }
 @media (max-width: 480px) {
     .main-title { font-size: 2.0rem !important; }
@@ -477,11 +496,12 @@ def load_geojson():
 predictions = load_predictions()
 barangay_geojson = load_geojson()
 
+# Signature Risk Palette (Cyber/Neon)
 risk_colors = {
-    "Safe": "green",
-    "Moderate": "yellow",
-    "High": "orange",
-    "Extreme": "red"
+    "Safe": "#00F0FF",      # Cyan
+    "Moderate": "#2DD4BF",  # Teal
+    "High": "#A855F7",      # Purple
+    "Extreme": "#FF006E"    # Hot Pink
 }
 risk_values = {
     "Safe": 1,
@@ -499,7 +519,7 @@ def simulate_cases(base_cases, rainfall_pct, humidity_pct, temp_pct, wind_pct, s
                         (1 + temp_pct) * (1 + wind_pct) * season_factor))
 
 # =====================================================
-# PDF REPORT GENERATOR (Unchanged for brevity, but perfect)
+# PDF REPORT GENERATOR
 # =====================================================
 
 def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
@@ -661,8 +681,8 @@ def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
 with st.sidebar:
     st.markdown("""
     <div style="text-align:center; margin-bottom:30px;">
-        <div style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:2.2rem; letter-spacing:4px; background:linear-gradient(135deg,#00F0FF,#A855F7); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">DRIVE</div>
-        <div style="font-family:'JetBrains Mono',monospace; font-weight:400; font-size:0.6rem; color:#2DD4BF; letter-spacing:3px; margin-top:2px;">BIOLUMINESCENT ABYSS</div>
+        <div style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:2.4rem; letter-spacing:4px; background:linear-gradient(135deg,#00F0FF,#A855F7); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">DRIVE</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-weight:400; font-size:0.6rem; color:#2DD4BF; letter-spacing:3px; margin-top:2px;">v1.0 · Signature</div>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
@@ -673,14 +693,14 @@ with st.sidebar:
     st.markdown("• Simulation")
     st.markdown("• Reports")
     st.markdown("---")
-    st.markdown("**⚙️ SONAR SETTINGS**")
+    st.markdown("**⚙️ SYSTEM SETTINGS**")
     st.markdown("📌 Quezon City District II")
     st.markdown("📅 Year: 2026")
     st.markdown("---")
-    st.caption("© 2026 DRIVE · Deep Surveillance")
+    st.caption("© 2026 DRIVE · All rights reserved.")
 
 # =====================================================
-# HERO – BIOLUMINESCENT ABYSS
+# HERO – SIGNATURE EDITION
 # =====================================================
 
 total_cases = int(predictions["Predicted_Cases"].sum())
@@ -694,7 +714,7 @@ st.markdown(f"""
         <div style="position:absolute; top:-30px; left:10px; font-size:3.8rem; opacity:0.3; filter:drop-shadow(0 0 40px #00F0FF);">🦠</div>
         <div style="position:absolute; bottom:-20px; right:10px; font-size:2.8rem; opacity:0.2; filter:drop-shadow(0 0 30px #A855F7);">🌊</div>
         <div class="main-title">DRIVE</div>
-        <div class="subtitle">Dengue Risk Intelligence · Deep Surveillance</div>
+        <div class="subtitle">Dengue Risk Intelligence · Visualization Engine</div>
         <div style="font-family:'JetBrains Mono',monospace; font-weight:300; color:#6A8CA0; margin:8px 0 16px; display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap; z-index:2; position:relative; font-size:0.8rem;">
             <span><i class="fas fa-microchip" style="color:#00F0FF;"></i> AI-Powered Early Warning</span>
             <span style="color:#3A5A6A;">|</span>
@@ -710,7 +730,7 @@ st.markdown(f"""
             <span class="metric-pill"><i class="fas fa-city"></i> <strong>{n_barangays}</strong> <span>Barangays</span></span>
         </div>
         <div style="margin-top:16px; font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:#3A5A6A; z-index:2; position:relative;">
-            <i class="fas fa-satellite" style="color:#2DD4BF;"></i> Last updated: April 2026 &nbsp;·&nbsp; <i class="fas fa-water" style="color:#00F0FF;"></i> Bioluminescent Abyss v3.0
+            <i class="fas fa-satellite" style="color:#2DD4BF;"></i> Last updated: April 2026 &nbsp;·&nbsp; <i class="fas fa-crown" style="color:#A855F7;"></i> First Release v1.0
         </div>
     </div>
 </div>
@@ -744,10 +764,10 @@ selected_month = st.selectbox(
 map_data = predictions[predictions["YearMonth"] == selected_month]
 
 def case_color(cases):
-    if cases < 50: return "#22C55E"
-    elif cases < 60: return "#F59E0B"
-    elif cases < 75: return "#F97316"
-    else: return "#EF4444"
+    if cases < 50: return "#00F0FF"      # Cyan
+    elif cases < 60: return "#2DD4BF"    # Teal
+    elif cases < 75: return "#A855F7"    # Purple
+    else: return "#FF006E"               # Hot Pink
 
 def style_function(feature):
     name = feature["properties"].get("name")
@@ -776,10 +796,10 @@ box-shadow: 0 8px 32px rgba(0,0,0,0.8);
 z-index: 9999;
 ">
 <b style="display:block; margin-bottom:8px; color:#00F0FF;">CASE INTENSITY</b>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#22C55E; border-radius:4px; box-shadow: 0 0 10px #22C55E;"></span> Low (&lt;50)</div>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#F59E0B; border-radius:4px; box-shadow: 0 0 10px #F59E0B;"></span> Moderate (50-60)</div>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#F97316; border-radius:4px; box-shadow: 0 0 10px #F97316;"></span> High (60-75)</div>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#EF4444; border-radius:4px; box-shadow: 0 0 10px #EF4444;"></span> Extreme (>75)</div>
+<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#00F0FF; border-radius:4px; box-shadow: 0 0 10px #00F0FF;"></span> Low (&lt;50)</div>
+<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#2DD4BF; border-radius:4px; box-shadow: 0 0 10px #2DD4BF;"></span> Moderate (50-60)</div>
+<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#A855F7; border-radius:4px; box-shadow: 0 0 10px #A855F7;"></span> High (60-75)</div>
+<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#FF006E; border-radius:4px; box-shadow: 0 0 10px #FF006E;"></span> Extreme (>75)</div>
 </div>
 """
 m.get_root().html.add_child(folium.Element(legend_html))
@@ -821,7 +841,7 @@ with col_chart:
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#A0B8CC", family="JetBrains Mono"),
+        font=dict(color="#A0B8CC", family="Inter"),
         margin=dict(l=20, r=20, t=20, b=20),
         height=400,
         xaxis=dict(gridcolor="rgba(0,240,255,0.05)", title=""),
@@ -861,7 +881,7 @@ if heatmap_type == "Predicted Cases":
     fig = px.imshow(
         pivot,
         text_auto=True,
-        color_continuous_scale=["#22C55E", "#F59E0B", "#F97316", "#EF4444"],
+        color_continuous_scale=["#00F0FF", "#2DD4BF", "#A855F7", "#FF006E"],
         aspect="equal",
         labels=dict(x="Month", y="Barangay", color="Cases")
     )
@@ -872,7 +892,7 @@ else:
         pivot,
         text_auto=True,
         zmin=1, zmax=4,
-        color_continuous_scale=["#22C55E", "#F59E0B", "#F97316", "#EF4444"],
+        color_continuous_scale=["#00F0FF", "#2DD4BF", "#A855F7", "#FF006E"],
         aspect="equal",
         labels=dict(x="Month", y="Barangay", color="Risk")
     )
@@ -881,7 +901,7 @@ else:
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#A0B8CC", size=11),
+    font=dict(color="#A0B8CC", size=11, family="Inter"),
     margin=dict(l=130, r=30, t=30, b=60),
     width=1000,
     autosize=False
@@ -1093,13 +1113,86 @@ if generate_btn:
         st.error("Failed to generate report. Please try again.")
 
 # =====================================================
-# FOOTER – SIGNATURE MANTRA (Abyss)
+# INJECT: LIVING PARTICLES (The Signature Ambient Effect)
+# =====================================================
+st.markdown("""
+<canvas id="driveCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; opacity:0.6;"></canvas>
+<script>
+(function() {
+    const canvas = document.getElementById('driveCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    const particles = [];
+    const numParticles = 60;
+
+    function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor() { this.reset(); }
+        reset() {
+            this.x = Math.random() * w;
+            this.y = Math.random() * h;
+            this.size = Math.random() * 2.5 + 1;
+            this.speedX = (Math.random() - 0.5) * 0.3;
+            this.speedY = (Math.random() - 0.5) * 0.3 - 0.1;
+            this.life = Math.random() * 200 + 100;
+            this.opacity = Math.random() * 0.5 + 0.2;
+            this.color = ['#00F0FF', '#A855F7', '#2DD4BF', '#FF006E'][Math.floor(Math.random() * 4)];
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.life -= 0.2;
+            if (this.x < 0) this.x = w;
+            if (this.x > w) this.x = 0;
+            if (this.y < 0) this.y = h;
+            if (this.y > h) this.y = 0;
+            if (this.life < 0) this.reset();
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 2);
+            gradient.addColorStop(0, this.color);
+            gradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradient;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 20;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+    }
+
+    for (let i = 0; i < numParticles; i++) {
+        particles.push(new Particle());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, w, h);
+        for (let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animate);
+    }
+    animate();
+})();
+</script>
+""", unsafe_allow_html=True)
+
+# =====================================================
+# FOOTER – SIGNATURE MANTRA
 # =====================================================
 
 st.markdown("""
 <div class="footer">
-    <i class="fas fa-satellite-dish"></i> DRIVE · Bioluminescent Abyss Edition · 
-    <span class="mantra">"In the silence of the deep, the data speaks."</span> · 
-    <i class="fas fa-water"></i> © 2026
+    <i class="fas fa-satellite-dish"></i> DRIVE · First Release v1.0 · 
+    <span class="mantra">"Data is the compass – but action is the voyage."</span> · 
+    <i class="fas fa-shield-halved"></i> © 2026
 </div>
 """, unsafe_allow_html=True)
