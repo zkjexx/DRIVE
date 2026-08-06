@@ -235,6 +235,11 @@ p, li, .stMarkdown {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
 }
+/* Ensure the plot container respects the fixed width */
+.js-plotly-plot .plotly {
+    min-width: 800px !important;
+    width: 800px !important;
+}
 
 @media (max-width: 640px) {
     .js-plotly-plot {
@@ -242,7 +247,8 @@ p, li, .stMarkdown {
         width: 100% !important;
     }
     .js-plotly-plot .plotly {
-        min-width: 750px !important;  /* Forces horizontal scroll */
+        min-width: 800px !important;
+        width: 800px !important;
     }
 }
 
@@ -717,7 +723,7 @@ with col_chart:
     st.plotly_chart(fig, use_container_width=True)
 
 # =====================================================
-# HEATMAP – Horizontal Scroll on Mobile, Fixed Height
+# HEATMAP – Horizontal Scroll on Mobile (Fixed Width)
 # =====================================================
 
 st.markdown("""
@@ -757,18 +763,19 @@ else:
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
 
-# Fixed height for all devices – scroll takes care of width
+# CRITICAL: Set a fixed width (800px) and DO NOT use use_container_width
+# This forces horizontal scroll on mobile
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#CBD5E1"),
     margin=dict(l=20, r=20, t=20, b=20),
-    height=400,           # Same for desktop and mobile
-    width=800             # Forces horizontal scroll on mobile
+    height=400,
+    width=800           # Fixed width – enables scroll
 )
 
 config = {'displayModeBar': False}
-st.plotly_chart(fig, use_container_width=True, config=config)
+st.plotly_chart(fig, use_container_width=False, config=config)   # <-- False is key!
 
 # =====================================================
 # WHAT‑IF SIMULATION
