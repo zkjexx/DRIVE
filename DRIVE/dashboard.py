@@ -1,6 +1,6 @@
 # =====================================================
 # DRIVE – Dengue Risk Intelligence & Visualization Engine
-# Version 1.0 (First Release)
+# Version 1.0 (Final Release)
 # =====================================================
 
 import streamlit as st
@@ -45,7 +45,7 @@ st.set_page_config(
 )
 
 # =====================================================
-# CSS – Clean, Minimal & Mobile-Friendly
+# CSS – Clean, Minimal, Mobile-Friendly, Polished
 # =====================================================
 
 st.markdown("""
@@ -67,11 +67,16 @@ html, body, .stApp {
     padding: 0 24px !important;
 }
 
+/* Typography */
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     font-family: 'Inter', 'Segoe UI', sans-serif !important;
     color: #F8FAFC !important;
     font-weight: 500 !important;
     letter-spacing: 0 !important;
+}
+p, li, .stMarkdown {
+    line-height: 1.6;
+    color: #E2E8F0;
 }
 .main-title {
     font-family: 'Orbitron', sans-serif !important;
@@ -105,6 +110,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     margin-bottom: 1.5rem !important;
 }
 
+/* Glassmorphism containers */
 .glass-hero {
     background: rgba(255, 255, 255, 0.06) !important;
     backdrop-filter: blur(16px) !important;
@@ -124,15 +130,23 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     margin: 20px 0 !important;
 }
 
+/* Sidebar */
 [data-testid="stSidebar"] {
     background: rgba(8, 20, 32, 0.85) !important;
     backdrop-filter: blur(16px) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+    min-width: 200px;
+    max-width: 240px;
 }
 [data-testid="stSidebar"] .stMarkdown {
     color: #CBD5E1 !important;
+    font-size: 0.9rem;
+}
+[data-testid="stSidebar"] hr {
+    opacity: 0.2;
 }
 
+/* Metric Pills */
 .metric-pill {
     display: inline-block;
     background: rgba(255, 255, 255, 0.06);
@@ -153,13 +167,15 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     color: #60A5FA;
 }
 
+/* Buttons */
 .stButton > button {
     background: linear-gradient(135deg, #3B82F6, #2563EB) !important;
     border: none !important;
     border-radius: 12px !important;
     color: #F8FAFC !important;
     font-family: 'Inter', sans-serif !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.3px !important;
     padding: 10px 24px !important;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
     transition: all 0.15s !important;
@@ -169,6 +185,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4) !important;
 }
 
+/* Dataframe */
 .stDataFrame {
     background: rgba(255, 255, 255, 0.02) !important;
     border-radius: 16px !important;
@@ -187,6 +204,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     color: #E2E8F0 !important;
 }
 
+/* Sliders */
 .stSlider > div > div > div > input {
     background: #3B82F6 !important;
     height: 4px !important;
@@ -199,6 +217,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     border: 2px solid #F8FAFC !important;
 }
 
+/* Plotly */
 .js-plotly-plot .plotly .main-svg {
     background: transparent !important;
 }
@@ -208,6 +227,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     border: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
+/* Footer */
 .footer {
     text-align: center;
     padding: 30px 0 10px;
@@ -216,6 +236,12 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     color: #64748B;
     font-family: 'Inter', sans-serif;
     font-size: 0.75rem;
+}
+
+/* Labels */
+.stSelectbox label, .stSlider label {
+    color: #94A3B8 !important;
+    font-weight: 400 !important;
 }
 
 /* =============================================
@@ -240,6 +266,10 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     }
     .stFoliumMap iframe {
         height: 400px !important;
+    }
+    [data-testid="stSidebar"] {
+        min-width: 0px !important;
+        max-width: 100% !important;
     }
 }
 
@@ -281,7 +311,15 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
         padding: 2px 4px !important;
     }
     .js-plotly-plot {
-        height: 280px !important;
+        height: 300px !important;
+        width: 100% !important;
+    }
+    .js-plotly-plot .plotly .annotation-text {
+        font-size: 9px !important;
+    }
+    .js-plotly-plot .plotly .ytick text,
+    .js-plotly-plot .plotly .xtick text {
+        font-size: 8px !important;
     }
 }
 
@@ -299,7 +337,7 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 """, unsafe_allow_html=True)
 
 # =====================================================
-# DATA LOADING – FIXED: load_geojson() is now HERE
+# DATA LOADING
 # =====================================================
 
 @st.cache_data
@@ -313,7 +351,6 @@ def load_geojson():
     with open(file_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-# Load both datasets
 predictions = load_predictions()
 barangay_geojson = load_geojson()
 
@@ -331,14 +368,10 @@ risk_values = {
 }
 
 # =====================================================
-# HEURISTIC SIMULATION (no model required)
+# HEURISTIC SIMULATION
 # =====================================================
 
 def simulate_cases(base_cases, rainfall_pct, humidity_pct, temp_pct, wind_pct, season_factor):
-    """
-    Applies percentage adjustments to the baseline predicted cases.
-    This is a practical sensitivity analysis for scenario planning.
-    """
     return max(0, round(base_cases * (1 + rainfall_pct) * (1 + humidity_pct) *
                         (1 + temp_pct) * (1 + wind_pct) * season_factor))
 
@@ -348,9 +381,6 @@ def simulate_cases(base_cases, rainfall_pct, humidity_pct, temp_pct, wind_pct, s
 
 def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
                         include_graphs=True, include_interventions=True):
-    """
-    Generate a polished PDF report for a specific barangay.
-    """
     barangay_data = df[df["Barangay"] == barangay].sort_values("YearMonth")
     if barangay_data.empty:
         return None
@@ -382,7 +412,7 @@ def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
             "Prepare healthcare facilities for possible case surge.",
             "Conduct targeted community interventions."
         ]
-    else:  # Extreme
+    else:
         interventions = [
             "Activate emergency dengue response measures.",
             "Deploy rapid response teams.",
@@ -408,7 +438,6 @@ def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
 
     story = []
 
-    # Header
     story.append(Paragraph("DRIVE", title_style))
     story.append(Paragraph("Dengue Risk Intelligence &bull; Visualization Engine",
                            ParagraphStyle('Subtitle', parent=styles['Normal'],
@@ -418,7 +447,6 @@ def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
     story.append(Paragraph(f"Report generated: {pd.Timestamp.now().strftime('%B %d, %Y')}", normal_style))
     story.append(Spacer(1, 0.3*inch))
 
-    # Summary
     if include_summary:
         story.append(Paragraph("Executive Summary", heading_style))
         summary_text = f"""
@@ -429,7 +457,6 @@ def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
         story.append(Paragraph(summary_text, normal_style))
         story.append(Spacer(1, 0.2*inch))
 
-    # Monthly table
     story.append(Paragraph("Monthly Forecast", heading_style))
     table_data = [["Month", "Predicted", "95% PI Lower", "95% PI Upper", "Risk"]]
     RMSE = 21.05
@@ -439,13 +466,7 @@ def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
         ci_upper = pred + 1.96 * RMSE
         month_str = pd.to_datetime(row["YearMonth"]).strftime("%b %Y")
         risk = row["Risk_Level"]
-        table_data.append([
-            month_str,
-            f"{pred:.0f}",
-            f"{ci_lower:.0f}",
-            f"{ci_upper:.0f}",
-            risk
-        ])
+        table_data.append([month_str, f"{pred:.0f}", f"{ci_lower:.0f}", f"{ci_upper:.0f}", risk])
 
     table = Table(table_data, colWidths=[1.2*inch, 1.2*inch, 1.2*inch, 1.2*inch, 1.2*inch])
     table.setStyle(TableStyle([
@@ -562,7 +583,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # =====================================================
-# INTERACTIVE RISK MAP – FIXED: load_geojson() is already defined
+# INTERACTIVE RISK MAP
 # =====================================================
 
 st.markdown("""
@@ -595,14 +616,12 @@ def style_function(feature):
     color = case_color(row.iloc[0]["Predicted_Cases"]) if not row.empty else "#64748B"
     return {"fillColor": color, "color": "white", "weight": 1, "fillOpacity": 0.7}
 
-# NOW barangay_geojson is already loaded from the top
 folium.GeoJson(
     barangay_geojson,
     style_function=style_function,
     tooltip=folium.GeoJsonTooltip(fields=["name"], aliases=["Barangay:"])
 ).add_to(m)
 
-# Fixed legend – dark background, white text
 legend_html = """
 <div style="
 position: fixed; top: 20px; right: 20px;
@@ -626,7 +645,6 @@ z-index: 9999;
 """
 m.get_root().html.add_child(folium.Element(legend_html))
 
-# FIXED: Responsive map
 st_folium(m, use_container_width=True, height=400)
 
 # =====================================================
@@ -673,7 +691,7 @@ with col_chart:
     st.plotly_chart(fig, use_container_width=True)
 
 # =====================================================
-# HEATMAP
+# HEATMAP – Fixed Mobile Responsiveness
 # =====================================================
 
 st.markdown("""
@@ -716,13 +734,16 @@ fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#CBD5E1"),
-    margin=dict(l=40, r=40, t=40, b=40),
-    height=500
+    margin=dict(l=30, r=30, t=30, b=30),
+    height=450
 )
-st.plotly_chart(fig, use_container_width=True)
+
+# Hide Plotly toolbar on mobile for cleaner look
+config = {'displayModeBar': False}
+st.plotly_chart(fig, use_container_width=True, config=config)
 
 # =====================================================
-# WHAT‑IF SIMULATION (Heuristic)
+# WHAT‑IF SIMULATION
 # =====================================================
 
 st.markdown("""
