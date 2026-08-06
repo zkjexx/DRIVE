@@ -530,8 +530,8 @@ def style_function(feature):
 @st.cache_data
 def load_geojson():
     file_path = os.path.join(SCRIPT_DIR, "qc_barangays.geojson")
-    with open(file_path, "r", encoding="utf-8") as f:
-    return json.load(f)
+        with open(file_path, "r", encoding="utf-8") as f:
+            return json.load(f)
 
 barangay_geojson = load_geojson()
 folium.GeoJson(
