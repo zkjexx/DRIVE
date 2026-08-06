@@ -35,6 +35,15 @@ from utils import classify_risk_4level
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # =====================================================
+# DETECT MOBILE DEVICE (for dynamic heatmap height)
+# =====================================================
+try:
+    user_agent = st.context.headers.get("User-Agent", "")
+except AttributeError:
+    user_agent = ""
+is_mobile = any(key in user_agent for key in ["Mobile", "Android", "iPhone", "iPad"])
+
+# =====================================================
 # PAGE CONFIG
 # =====================================================
 
@@ -699,7 +708,7 @@ with col_chart:
     st.plotly_chart(fig, use_container_width=True)
 
 # =====================================================
-# HEATMAP – Fixed Mobile Responsiveness & Stretching
+# HEATMAP – Dynamic Height (Desktop Landscape / Mobile Portrait)
 # =====================================================
 
 st.markdown("""
@@ -723,7 +732,7 @@ if heatmap_type == "Predicted Cases":
         pivot,
         text_auto=True,
         color_continuous_scale=["#22C55E", "#F59E0B", "#F97316", "#EF4444"],
-        aspect="equal",  # <-- FIX: Prevents horizontal stretching
+        aspect="equal",          # Keeps cells square
         labels=dict(x="Month", y="Barangay", color="Cases")
     )
 else:
@@ -734,17 +743,22 @@ else:
         text_auto=True,
         zmin=1, zmax=4,
         color_continuous_scale=["#22C55E", "#F59E0B", "#F97316", "#EF4444"],
-        aspect="equal",  # <-- FIX: Prevents horizontal stretching
+        aspect="equal",
         labels=dict(x="Month", y="Barangay", color="Risk")
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
+
+# =====================================================
+# DYNAMIC HEIGHT: 550px on mobile, 400px on desktop
+# =====================================================
+heatmap_height = 550 if is_mobile else 400
 
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#CBD5E1"),
-    margin=dict(l=20, r=20, t=20, b=20),  # Reduced margins for better fit
-    height=400
+    margin=dict(l=20, r=20, t=20, b=20),
+    height=heatmap_height
 )
 
 config = {'displayModeBar': False}
