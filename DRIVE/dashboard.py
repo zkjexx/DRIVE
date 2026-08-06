@@ -61,7 +61,8 @@ html, body, .stApp {
     background: linear-gradient(180deg, #081420 0%, #0B2035 100%) !important;
 }
 
-.main > div {
+/* Force centering and max-width for all content */
+section.main > div {
     max-width: 1400px !important;
     margin: 0 auto !important;
     padding: 0 24px !important;
@@ -248,6 +249,9 @@ p, li, .stMarkdown {
    MOBILE-FRIENDLY OVERRIDES
    ============================================= */
 @media (max-width: 768px) {
+    section.main > div {
+        padding: 0 12px !important;
+    }
     .main-title {
         font-size: 2.6rem !important;
     }
@@ -274,6 +278,9 @@ p, li, .stMarkdown {
 }
 
 @media (max-width: 480px) {
+    section.main > div {
+        padding: 0 6px !important;
+    }
     .main-title {
         font-size: 2.0rem !important;
         letter-spacing: 1px !important;
@@ -323,6 +330,7 @@ p, li, .stMarkdown {
     }
 }
 
+/* Force columns to stack on mobile */
 @media (max-width: 640px) {
     .row-widget.stColumns {
         flex-direction: column !important;
@@ -691,7 +699,7 @@ with col_chart:
     st.plotly_chart(fig, use_container_width=True)
 
 # =====================================================
-# HEATMAP – Fixed Mobile Responsiveness
+# HEATMAP – Fixed Mobile Responsiveness & Stretching
 # =====================================================
 
 st.markdown("""
@@ -708,13 +716,14 @@ heatmap_type = st.selectbox(
 )
 
 heat = predictions.copy()
+
 if heatmap_type == "Predicted Cases":
     pivot = heat.pivot(index="Barangay", columns="YearMonth", values="Predicted_Cases")
     fig = px.imshow(
         pivot,
         text_auto=True,
         color_continuous_scale=["#22C55E", "#F59E0B", "#F97316", "#EF4444"],
-        aspect="auto",
+        aspect="equal",  # <-- FIX: Prevents horizontal stretching
         labels=dict(x="Month", y="Barangay", color="Cases")
     )
 else:
@@ -725,7 +734,7 @@ else:
         text_auto=True,
         zmin=1, zmax=4,
         color_continuous_scale=["#22C55E", "#F59E0B", "#F97316", "#EF4444"],
-        aspect="auto",
+        aspect="equal",  # <-- FIX: Prevents horizontal stretching
         labels=dict(x="Month", y="Barangay", color="Risk")
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
@@ -734,11 +743,10 @@ fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#CBD5E1"),
-    margin=dict(l=30, r=30, t=30, b=30),
-    height=450
+    margin=dict(l=20, r=20, t=20, b=20),  # Reduced margins for better fit
+    height=400
 )
 
-# Hide Plotly toolbar on mobile for cleaner look
 config = {'displayModeBar': False}
 st.plotly_chart(fig, use_container_width=True, config=config)
 
