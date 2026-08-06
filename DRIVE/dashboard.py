@@ -610,7 +610,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # =====================================================
-# INTERACTIVE RISK MAP
+# INTERACTIVE RISK MAP (Scroll Zoom Disabled)
 # =====================================================
 
 st.markdown("""
@@ -621,7 +621,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 map_center = [14.6760, 121.0437]
-m = folium.Map(location=map_center, zoom_start=12, tiles="cartodbpositron")
+m = folium.Map(
+    location=map_center,
+    zoom_start=12,
+    tiles="cartodbpositron",
+    scrollWheelZoom=False   # <-- Disables scroll zoom
+)
 
 selected_month = st.selectbox(
     "Select Forecast Month",
@@ -675,7 +680,7 @@ m.get_root().html.add_child(folium.Element(legend_html))
 st_folium(m, use_container_width=True, height=400)
 
 # =====================================================
-# FORECAST TABLE & TREND CHART
+# FORECAST TABLE & TREND CHART (Scroll Zoom Disabled)
 # =====================================================
 
 col_table, col_chart = st.columns([1, 1], gap="large")
@@ -715,10 +720,18 @@ with col_chart:
         xaxis=dict(gridcolor="rgba(255,255,255,0.05)"),
         yaxis=dict(gridcolor="rgba(255,255,255,0.05)")
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
+        config={
+            'displayModeBar': False,
+            'scrollZoom': False,   # <-- Disables scroll zoom
+            'doubleClick': False   # <-- Disables double‑click zoom
+        }
+    )
 
 # =====================================================
-# HEATMAP – FIXED MARGINS (All Labels Visible)
+# HEATMAP – SCROLLABLE, REDUCED SIZE, DARK DROPDOWN
 # =====================================================
 
 st.markdown("""
@@ -758,12 +771,12 @@ else:
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
 
-# --- FIX: MASSIVE MARGIN INCREASE ---
+# --- Layout: reduced width, larger margins for labels ---
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#CBD5E1", size=11),
-    margin=dict(l=130, r=30, t=30, b=60),  # <--- l=130 for long barangay names, b=60 for months
+    margin=dict(l=130, r=30, t=30, b=60),   # l=130 for long barangay names, b=60 for months
     width=1000,
     autosize=False
 )
@@ -795,7 +808,7 @@ scrollable_html = f"""
 </div>
 """
 
-# --- Inject with st.components (taller height so bottom labels aren't cut) ---
+# --- Inject with st.components (taller height) ---
 st.components.v1.html(scrollable_html, height=520)
 
 # =====================================================
