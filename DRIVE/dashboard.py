@@ -723,7 +723,7 @@ with col_chart:
     st.plotly_chart(fig, use_container_width=True)
 
 # =====================================================
-# HEATMAP – Horizontal Scroll on Mobile (Fixed Width)
+# HEATMAP – Fixed Width + Horizontal Scroll
 # =====================================================
 
 st.markdown("""
@@ -763,19 +763,26 @@ else:
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
 
-# CRITICAL: Set a fixed width (800px) and DO NOT use use_container_width
-# This forces horizontal scroll on mobile
+# Fixed width: 800px ensures enough space for all 12 months
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#CBD5E1"),
     margin=dict(l=20, r=20, t=20, b=20),
     height=400,
-    width=800           # Fixed width – enables scroll
+    width=800
 )
 
-config = {'displayModeBar': False}
-st.plotly_chart(fig, use_container_width=False, config=config)   # <-- False is key!
+# =====================================================
+# CRITICAL WRAPPER: Forces horizontal scroll
+# =====================================================
+st.markdown('<div style="overflow-x: auto; width: 100%;">', unsafe_allow_html=True)
+st.plotly_chart(
+    fig,
+    use_container_width=True,
+    config={'displayModeBar': False, 'responsive': False}  # <-- Disables auto‑resize
+)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # =====================================================
 # WHAT‑IF SIMULATION
