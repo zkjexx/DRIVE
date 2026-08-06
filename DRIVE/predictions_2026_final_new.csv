@@ -1,0 +1,61 @@
+Barangay,YearMonth,Predicted_Cases,Lower95,Upper95,Historical_Mean,Historical_SD,Risk_Level
+Bagong Silangan,2026-01,50,10.74,89.26,11.05,12.62,Extreme
+Bagong Silangan,2026-02,52,12.74,91.26,11.05,12.62,Extreme
+Bagong Silangan,2026-03,47,7.74,86.26,11.05,12.62,Extreme
+Bagong Silangan,2026-04,47,7.74,86.26,11.05,12.62,Extreme
+Bagong Silangan,2026-05,46,6.74,85.26,11.05,12.62,Extreme
+Bagong Silangan,2026-06,48,8.74,87.26,11.05,12.62,Extreme
+Bagong Silangan,2026-07,54,14.74,93.26,11.05,12.62,Extreme
+Bagong Silangan,2026-08,56,16.74,95.26,11.05,12.62,Extreme
+Bagong Silangan,2026-09,57,17.74,96.26,11.05,12.62,Extreme
+Bagong Silangan,2026-10,56,16.74,95.26,11.05,12.62,Extreme
+Bagong Silangan,2026-11,57,17.74,96.26,11.05,12.62,Extreme
+Bagong Silangan,2026-12,52,12.74,91.26,11.05,12.62,Extreme
+Batasan Hills,2026-01,57,17.74,96.26,28.18,31.35,Extreme
+Batasan Hills,2026-02,56,16.74,95.26,28.18,31.35,Extreme
+Batasan Hills,2026-03,56,16.74,95.26,28.18,31.35,Extreme
+Batasan Hills,2026-04,54,14.74,93.26,28.18,31.35,Extreme
+Batasan Hills,2026-05,51,11.74,90.26,28.18,31.35,Extreme
+Batasan Hills,2026-06,53,13.74,92.26,28.18,31.35,Extreme
+Batasan Hills,2026-07,58,18.74,97.26,28.18,31.35,Extreme
+Batasan Hills,2026-08,63,23.74,102.26,28.18,31.35,Extreme
+Batasan Hills,2026-09,66,26.74,105.26,28.18,31.35,Extreme
+Batasan Hills,2026-10,67,27.74,106.26,28.18,31.35,Extreme
+Batasan Hills,2026-11,68,28.74,107.26,28.18,31.35,Extreme
+Batasan Hills,2026-12,60,20.74,99.26,28.18,31.35,Extreme
+Commonwealth,2026-01,56,16.74,95.26,28.09,33.85,Extreme
+Commonwealth,2026-02,56,16.74,95.26,28.09,33.85,Extreme
+Commonwealth,2026-03,57,17.74,96.26,28.09,33.85,Extreme
+Commonwealth,2026-04,59,19.74,98.26,28.09,33.85,Extreme
+Commonwealth,2026-05,63,23.74,102.26,28.09,33.85,Extreme
+Commonwealth,2026-06,67,27.74,106.26,28.09,33.85,Extreme
+Commonwealth,2026-07,71,31.74,110.26,28.09,33.85,Extreme
+Commonwealth,2026-08,75,35.74,114.26,28.09,33.85,Extreme
+Commonwealth,2026-09,73,33.74,112.26,28.09,33.85,Extreme
+Commonwealth,2026-10,75,35.74,114.26,28.09,33.85,Extreme
+Commonwealth,2026-11,82,42.74,121.26,28.09,33.85,Extreme
+Commonwealth,2026-12,77,37.74,116.26,28.09,33.85,Extreme
+Holy Spirit,2026-01,46,6.74,85.26,17.36,17.49,Extreme
+Holy Spirit,2026-02,50,10.74,89.26,17.36,17.49,Extreme
+Holy Spirit,2026-03,46,6.74,85.26,17.36,17.49,Extreme
+Holy Spirit,2026-04,45,5.74,84.26,17.36,17.49,Extreme
+Holy Spirit,2026-05,44,4.74,83.26,17.36,17.49,Extreme
+Holy Spirit,2026-06,46,6.74,85.26,17.36,17.49,Extreme
+Holy Spirit,2026-07,52,12.74,91.26,17.36,17.49,Extreme
+Holy Spirit,2026-08,53,13.74,92.26,17.36,17.49,Extreme
+Holy Spirit,2026-09,52,12.74,91.26,17.36,17.49,Extreme
+Holy Spirit,2026-10,50,10.74,89.26,17.36,17.49,Extreme
+Holy Spirit,2026-11,51,11.74,90.26,17.36,17.49,Extreme
+Holy Spirit,2026-12,43,3.74,82.26,17.36,17.49,Extreme
+Payatas,2026-01,61,21.74,100.26,42.86,42.38,Extreme
+Payatas,2026-02,67,27.74,106.26,42.86,42.38,Extreme
+Payatas,2026-03,68,28.74,107.26,42.86,42.38,Extreme
+Payatas,2026-04,66,26.74,105.26,42.86,42.38,Extreme
+Payatas,2026-05,64,24.74,103.26,42.86,42.38,Extreme
+Payatas,2026-06,67,27.74,106.26,42.86,42.38,Extreme
+Payatas,2026-07,70,30.74,109.26,42.86,42.38,Extreme
+Payatas,2026-08,76,36.74,115.26,42.86,42.38,Extreme
+Payatas,2026-09,71,31.74,110.26,42.86,42.38,Extreme
+Payatas,2026-10,74,34.74,113.26,42.86,42.38,Extreme
+Payatas,2026-11,76,36.74,115.26,42.86,42.38,Extreme
+Payatas,2026-12,69,29.74,108.26,42.86,42.38,Extreme
