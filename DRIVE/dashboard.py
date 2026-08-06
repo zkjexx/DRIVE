@@ -718,7 +718,7 @@ with col_chart:
     st.plotly_chart(fig, use_container_width=True)
 
 # =====================================================
-# HEATMAP – SCROLLABLE, REDUCED SIZE, DARK DROPDOWN
+# HEATMAP – FIXED MARGINS (All Labels Visible)
 # =====================================================
 
 st.markdown("""
@@ -758,13 +758,13 @@ else:
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
 
-# --- Layout: reduced width (1000px) and larger left margin to avoid overlap ---
+# --- FIX: MASSIVE MARGIN INCREASE ---
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#CBD5E1", size=11),
-    margin=dict(l=50, r=20, t=20, b=20),   # increased left margin for y-axis labels
-    width=1000,                            # reduced from 1200 to 1000
+    margin=dict(l=130, r=30, t=30, b=60),  # <--- l=130 for long barangay names, b=60 for months
+    width=1000,
     autosize=False
 )
 
@@ -782,7 +782,7 @@ html_str = fig.to_html(
     default_width='1000px'
 )
 
-# --- Wrap in a scrollable div with horizontal touch restriction ---
+# --- Wrap in a scrollable div ---
 scrollable_html = f"""
 <div style="
     overflow-x: auto;
@@ -795,8 +795,8 @@ scrollable_html = f"""
 </div>
 """
 
-# --- Inject with st.components, reduced height ---
-st.components.v1.html(scrollable_html, height=450)   # lower height to avoid overlap
+# --- Inject with st.components (taller height so bottom labels aren't cut) ---
+st.components.v1.html(scrollable_html, height=520)
 
 # =====================================================
 # WHAT‑IF SIMULATION
