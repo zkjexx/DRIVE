@@ -35,15 +35,6 @@ from utils import classify_risk_4level
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # =====================================================
-# DETECT MOBILE DEVICE (for dynamic heatmap sizing)
-# =====================================================
-try:
-    user_agent = st.context.headers.get("User-Agent", "")
-except AttributeError:
-    user_agent = ""
-is_mobile = any(key in user_agent for key in ["Mobile", "Android", "iPhone", "iPad"])
-
-# =====================================================
 # PAGE CONFIG
 # =====================================================
 
@@ -726,13 +717,13 @@ with col_chart:
     st.plotly_chart(fig, use_container_width=True)
 
 # =====================================================
-# HEATMAP – Mobile Scrollable (Horizontal Scroll)
+# HEATMAP – Horizontal Scroll on Mobile, Fixed Height
 # =====================================================
 
 st.markdown("""
 <div style="margin: 40px 0 10px;">
     <div class="section-title">Dengue Heatmap</div>
-    <div class="section-desc">Visual intensity of predicted cases.</div>
+    <div class="section-desc">Visual intensity of predicted cases. Swipe left/right on mobile.</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -766,19 +757,14 @@ else:
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
 
-# =====================================================
-# DYNAMIC: Desktop normal, Mobile scrollable
-# =====================================================
-heatmap_width = 850 if is_mobile else None  # Forces scroll on mobile
-heatmap_height = 500 if is_mobile else 400
-
+# Fixed height for all devices – scroll takes care of width
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(color="#CBD5E1"),
     margin=dict(l=20, r=20, t=20, b=20),
-    height=heatmap_height,
-    width=heatmap_width  # <-- Forces horizontal scroll on mobile
+    height=400,           # Same for desktop and mobile
+    width=800             # Forces horizontal scroll on mobile
 )
 
 config = {'displayModeBar': False}
