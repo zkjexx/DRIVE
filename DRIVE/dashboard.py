@@ -1,6 +1,6 @@
 # =====================================================
 # DRIVE – Dengue Risk Intelligence & Visualization Engine
-# Version 2.0 (Obsidian Glass Edition)
+# Version 3.0 (Bioluminescent Abyss Edition)
 # =====================================================
 
 import streamlit as st
@@ -39,33 +39,59 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 # =====================================================
 
 st.set_page_config(
-    page_title="DRIVE – Dengue Risk Intelligence",
+    page_title="DRIVE – Bioluminescent Abyss",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # =====================================================
-# CSS – OBSIDIAN GLASS: The Signature Design
+# CSS – THE BIOLUMINESCENT ABYSS (SIGNATURE DESIGN)
 # =====================================================
 
 st.markdown("""
 <style>
 /* ----- FONTS & ICONS ----- */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=JetBrains+Mono:wght@300;400;600;700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
 
-/* ----- BASE & RADAR ANIMATION ----- */
+/* ----- RESET & BASE (Deep Abyss) ----- */
 html, body, .stApp {
-    background: #081420 !important;
+    background: #060A12 !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow-x: hidden;
 }
 .stApp {
-    background: linear-gradient(180deg, #081420 0%, #0B2035 100%) !important;
+    background: radial-gradient(ellipse at 20% 50%, #0B1A2A 0%, #060A12 70%) !important;
 }
 
-/* Pulsating Radar Background (Signature Animation) */
+/* ---- BIO-LUMINESCENT PARTICLES (CSS Only) ---- */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #00F0FF, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #A855F7, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 120px 200px, #2DD4BF, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #00F0FF, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 300px 500px, #A855F7, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 600px 100px, #2DD4BF, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 800px 300px, #00F0FF, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 400px 700px, #A855F7, rgba(0,0,0,0));
+    background-size: 200px 200px;
+    background-repeat: repeat;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+    animation: driftParticles 30s linear infinite;
+}
+@keyframes driftParticles {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-50px, -30px) scale(1.2); }
+}
+
+/* ---- PULSING SONAR (Hero Background) ---- */
 section.main > div {
     position: relative;
     z-index: 2;
@@ -73,37 +99,38 @@ section.main > div {
 section.main::before {
     content: '';
     position: fixed;
-    top: 50%;
+    top: 25%;
     left: 50%;
-    width: 120vmax;
-    height: 120vmax;
+    width: 80vmin;
+    height: 80vmin;
     transform: translate(-50%, -50%);
-    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.04) 0%, transparent 70%);
+    border: 1px solid rgba(0, 240, 255, 0.08);
     border-radius: 50%;
-    animation: radarPulse 6s ease-in-out infinite alternate;
+    box-shadow: 0 0 60px rgba(0, 240, 255, 0.05), inset 0 0 60px rgba(0, 240, 255, 0.02);
+    animation: sonarPulse 4s ease-out infinite;
     pointer-events: none;
     z-index: 0;
 }
-@keyframes radarPulse {
-    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.3; }
-    100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.8; }
-}
-
-/* Floating Emojis (Signature Decor) */
-.floating-emoji {
+section.main::after {
+    content: '';
     position: fixed;
-    font-size: 2.8rem;
-    opacity: 0.08;
+    top: 25%;
+    left: 50%;
+    width: 60vmin;
+    height: 60vmin;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(168, 85, 247, 0.05);
+    border-radius: 50%;
+    animation: sonarPulse 4s ease-out 2s infinite;
     pointer-events: none;
     z-index: 0;
-    animation: floatAnim 12s ease-in-out infinite alternate;
 }
-@keyframes floatAnim {
-    0% { transform: translateY(0px) rotate(0deg); }
-    100% { transform: translateY(-40px) rotate(10deg); }
+@keyframes sonarPulse {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
 }
 
-/* ----- LAYOUT & GLASS CONTAINERS ----- */
+/* ----- LAYOUT & GLASS (Holographic Panels) ----- */
 section.main > div {
     max-width: 1400px !important;
     margin: 0 auto !important;
@@ -111,73 +138,76 @@ section.main > div {
 }
 
 .glass-hero {
-    background: rgba(255, 255, 255, 0.04) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-radius: 32px !important;
+    background: rgba(6, 10, 18, 0.65) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid rgba(0, 240, 255, 0.15) !important;
+    border-radius: 40px !important;
     padding: 40px 20px !important;
     margin: 20px 0 40px !important;
     text-align: center !important;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.05), inset 0 0 40px rgba(0, 240, 255, 0.02);
+    transition: all 0.3s ease;
 }
 .glass-hero:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+    border-color: rgba(168, 85, 247, 0.3);
+    box-shadow: 0 0 60px rgba(168, 85, 247, 0.1);
 }
-.glass-hero::after {
+
+/* Holographic scanline on hero */
+.glass-hero::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(from 0deg, transparent, rgba(59,130,246,0.03), transparent, rgba(59,130,246,0.03), transparent);
-    animation: rotateGlow 20s linear infinite;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, 
+        transparent 0px, 
+        transparent 4px, 
+        rgba(0, 240, 255, 0.02) 4px, 
+        rgba(0, 240, 255, 0.02) 5px);
     pointer-events: none;
-}
-@keyframes rotateGlow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    z-index: 1;
 }
 
 .glass-map, .card {
-    background: rgba(255, 255, 255, 0.03) !important;
+    background: rgba(6, 10, 18, 0.6) !important;
     backdrop-filter: blur(16px) !important;
     -webkit-backdrop-filter: blur(16px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
-    border-radius: 24px !important;
+    border: 1px solid rgba(0, 240, 255, 0.08) !important;
+    border-radius: 28px !important;
     padding: 20px !important;
     margin: 20px 0 !important;
-    transition: transform 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 .glass-map:hover, .card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(59, 130, 246, 0.3) !important;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    transform: translateY(-6px);
+    border-color: rgba(0, 240, 255, 0.3);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.05);
 }
 
-/* ----- TYPOGRAPHY ----- */
+/* ----- TYPOGRAPHY (Holographic) ----- */
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-    font-family: 'Inter', 'Segoe UI', sans-serif !important;
-    color: #F8FAFC !important;
-    font-weight: 500 !important;
-    letter-spacing: 0 !important;
+    font-family: 'JetBrains Mono', 'Inter', monospace !important;
+    color: #E2F0FA !important;
+    font-weight: 400 !important;
+    letter-spacing: 1px !important;
 }
 p, li, .stMarkdown {
-    line-height: 1.6;
-    color: #E2E8F0;
+    line-height: 1.7;
+    color: #A0B8CC;
 }
+
 .main-title {
     font-family: 'Orbitron', sans-serif !important;
     font-weight: 900 !important;
-    font-size: 4.2rem !important;
-    letter-spacing: 6px !important;
-    color: #F8FAFC !important;
-    text-align: center !important;
+    font-size: 4.6rem !important;
+    letter-spacing: 8px !important;
+    background: linear-gradient(135deg, #00F0FF 0%, #A855F7 50%, #2DD4BF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
     margin: 0 !important;
     padding: 0 !important;
     line-height: 1.1 !important;
@@ -185,257 +215,248 @@ p, li, .stMarkdown {
     z-index: 2;
 }
 .subtitle {
-    font-family: 'Inter', sans-serif !important;
+    font-family: 'JetBrains Mono', monospace !important;
     font-weight: 300 !important;
-    font-size: 1.3rem !important;
-    color: #CBD5E1 !important;
+    font-size: 1.0rem !important;
+    color: #A855F7 !important;
     text-align: center !important;
-    margin-top: -0.3rem !important;
+    letter-spacing: 6px !important;
+    text-transform: uppercase;
+    margin-top: -0.2rem !important;
     position: relative;
     z-index: 2;
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
 }
 .section-title {
-    font-size: 1.5rem !important;
+    font-size: 1.3rem !important;
     font-weight: 600 !important;
-    color: #F8FAFC !important;
+    color: #00F0FF !important;
     margin-bottom: 0.25rem !important;
     display: flex;
     align-items: center;
     gap: 0.6rem;
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
 }
 .section-title i {
-    color: #60A5FA;
-    font-size: 1.4rem;
+    color: #A855F7;
+    font-size: 1.3rem;
 }
 .section-desc {
-    font-size: 0.95rem !important;
-    color: #94A3B8 !important;
+    font-size: 0.9rem !important;
+    color: #6A8CA0 !important;
     margin-top: 0 !important;
     margin-bottom: 1.5rem !important;
 }
 
-/* ----- SIDEBAR (Polished) ----- */
+/* ----- SIDEBAR (Abyss Panel) ----- */
 [data-testid="stSidebar"] {
-    background: rgba(8, 20, 32, 0.85) !important;
-    backdrop-filter: blur(20px) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+    background: rgba(6, 10, 18, 0.9) !important;
+    backdrop-filter: blur(24px) !important;
+    border-right: 1px solid rgba(0, 240, 255, 0.08) !important;
     min-width: 200px;
     max-width: 240px;
 }
 [data-testid="stSidebar"] .stMarkdown {
-    color: #CBD5E1 !important;
+    color: #A0B8CC !important;
     font-size: 0.9rem;
 }
 [data-testid="stSidebar"] hr {
     opacity: 0.2;
+    border-color: #00F0FF;
 }
 
-/* ----- METRIC PILLS (Glowing Badges) ----- */
+/* ----- METRIC PILLS (Bioluminescent) ----- */
 .metric-pill {
     display: inline-block;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 240, 255, 0.04);
+    border: 1px solid rgba(0, 240, 255, 0.1);
     border-radius: 999px;
-    padding: 8px 20px;
-    margin: 4px 8px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    color: #CBD5E1;
+    padding: 8px 22px;
+    margin: 4px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #A0B8CC;
     white-space: nowrap;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     backdrop-filter: blur(4px);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.02);
 }
 .metric-pill:hover {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: #3B82F6;
-    transform: scale(1.02);
+    background: rgba(0, 240, 255, 0.08);
+    border-color: #00F0FF;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
+    transform: scale(1.03);
 }
 .metric-pill strong {
-    color: #F8FAFC;
-    font-weight: 600;
+    color: #E2F0FA;
+    font-weight: 700;
 }
 .metric-pill i {
-    color: #60A5FA;
-    margin-right: 4px;
+    color: #2DD4BF;
+    margin-right: 6px;
 }
 
-/* Status Badge (Live Indicator) */
+/* Status Badge (Deep Pulse) */
 .status-badge {
     display: inline-block;
-    background: rgba(34, 197, 94, 0.15);
-    border: 1px solid #22C55E;
+    background: rgba(0, 240, 255, 0.08);
+    border: 1px solid #00F0FF;
     border-radius: 999px;
-    padding: 4px 16px 4px 12px;
-    font-size: 0.8rem;
+    padding: 4px 18px 4px 14px;
+    font-size: 0.7rem;
     font-weight: 600;
-    color: #86EFAC;
-    letter-spacing: 0.5px;
+    color: #00F0FF;
+    letter-spacing: 2px;
     backdrop-filter: blur(4px);
-    margin-left: 8px;
+    text-transform: uppercase;
 }
 .status-badge .dot {
     display: inline-block;
     width: 8px;
     height: 8px;
-    background: #22C55E;
+    background: #00F0FF;
     border-radius: 50%;
-    margin-right: 6px;
-    animation: pulseDot 1.5s ease-in-out infinite;
+    margin-right: 8px;
+    box-shadow: 0 0 15px #00F0FF;
+    animation: pulseDeep 1.2s ease-in-out infinite;
 }
-@keyframes pulseDot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.3; transform: scale(0.8); }
+@keyframes pulseDeep {
+    0%, 100% { opacity: 1; box-shadow: 0 0 15px #00F0FF; }
+    50% { opacity: 0.2; box-shadow: 0 0 5px #00F0FF; }
 }
 
-/* ----- BUTTONS (Neon Glow) ----- */
+/* ----- BUTTONS (Neon Abyss) ----- */
 .stButton > button {
-    background: linear-gradient(135deg, #3B82F6, #2563EB) !important;
+    background: linear-gradient(135deg, #00F0FF, #A855F7) !important;
     border: none !important;
-    border-radius: 14px !important;
-    color: #F8FAFC !important;
-    font-family: 'Inter', sans-serif !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.5px !important;
-    padding: 12px 28px !important;
-    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25) !important;
-    transition: all 0.2s ease !important;
+    border-radius: 16px !important;
+    color: #060A12 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+    padding: 14px 32px !important;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.15) !important;
+    transition: all 0.3s ease !important;
 }
 .stButton > button:hover {
-    transform: translateY(-3px) scale(1.02) !important;
-    box-shadow: 0 8px 32px rgba(37, 99, 235, 0.5) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    box-shadow: 0 0 50px rgba(0, 240, 255, 0.4) !important;
 }
 .stButton > button:active {
     transform: translateY(2px) scale(0.98) !important;
 }
 
-/* ----- DATAFRAME ----- */
+/* ----- DATAFRAME (Neon Grid) ----- */
 .stDataFrame {
-    background: rgba(255, 255, 255, 0.02) !important;
-    border-radius: 16px !important;
+    background: rgba(6, 10, 18, 0.8) !important;
+    border-radius: 18px !important;
     overflow: hidden !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(0, 240, 255, 0.05) !important;
 }
 .stDataFrame thead tr th {
-    background: rgba(59, 130, 246, 0.15) !important;
-    color: #F8FAFC !important;
+    background: rgba(0, 240, 255, 0.05) !important;
+    color: #00F0FF !important;
     font-weight: 600 !important;
 }
 .stDataFrame tbody tr:hover {
-    background: rgba(59, 130, 246, 0.08) !important;
+    background: rgba(168, 85, 247, 0.05) !important;
 }
 .stDataFrame td {
-    color: #E2E8F0 !important;
+    color: #A0B8CC !important;
 }
 
-/* ----- SLIDERS (Custom) ----- */
+/* ----- SLIDERS (Cyan Glow) ----- */
 .stSlider > div > div > div > input {
-    background: #3B82F6 !important;
-    height: 5px !important;
+    background: #A855F7 !important;
+    height: 4px !important;
 }
 .stSlider > div > div > div > input::-webkit-slider-thumb {
-    background: #60A5FA !important;
-    width: 18px !important;
-    height: 18px !important;
+    background: #00F0FF !important;
+    width: 20px !important;
+    height: 20px !important;
     border-radius: 50% !important;
-    border: 3px solid #F8FAFC !important;
-    box-shadow: 0 0 16px rgba(59, 130, 246, 0.5);
+    border: 2px solid #060A12 !important;
+    box-shadow: 0 0 25px #00F0FF;
     transition: 0.1s ease;
 }
 
-/* ----- SELECTBOX (Dark + Glow) ----- */
+/* ----- SELECTBOX (Glass Neon) ----- */
 .stSelectbox label {
-    color: #94A3B8 !important;
+    color: #6A8CA0 !important;
     font-weight: 500 !important;
 }
 .stSelectbox > div > div {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 12px !important;
-    color: #F8FAFC !important;
-    transition: border 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(6, 10, 18, 0.8) !important;
+    border: 1px solid rgba(0, 240, 255, 0.15) !important;
+    border-radius: 14px !important;
+    color: #E2F0FA !important;
+    transition: all 0.3s ease;
 }
 .stSelectbox > div > div:hover {
-    border-color: #3B82F6 !important;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-}
-.stSelectbox > div > div > div {
-    color: #F8FAFC !important;
+    border-color: #00F0FF !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
 }
 .stSelectbox > div > div > div > div {
-    background: #0B2035 !important;
-    color: #F8FAFC !important;
+    background: #060A12 !important;
+    color: #E2F0FA !important;
 }
 .stSelectbox > div > div > div > div > div:hover {
-    background: rgba(59, 130, 246, 0.2) !important;
+    background: rgba(0, 240, 255, 0.1) !important;
 }
 
-/* ----- SCROLLBAR (Signature) ----- */
+/* ----- SCROLLBAR (Bioluminescent) ----- */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 ::-webkit-scrollbar-track {
-    background: rgba(8, 20, 32, 0.8);
-    border-radius: 10px;
+    background: #060A12;
 }
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #3B82F6, #60A5FA);
+    background: linear-gradient(180deg, #00F0FF, #A855F7);
     border-radius: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #60A5FA, #93BBFC);
+    background: linear-gradient(180deg, #A855F7, #2DD4BF);
 }
 
-/* ----- FOOTER (Mantra) ----- */
+/* ----- FOOTER (Deep Mantra) ----- */
 .footer {
     text-align: center;
     padding: 30px 0 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    border-top: 1px solid rgba(0, 240, 255, 0.05);
     margin-top: 40px;
-    color: #64748B;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.3px;
+    color: #3A5A6A;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
 }
 .footer i {
-    color: #60A5FA;
-    margin: 0 4px;
+    color: #2DD4BF;
+    margin: 0 6px;
 }
 .footer .mantra {
-    color: #94A3B8;
-    font-style: italic;
+    color: #A855F7;
     font-weight: 300;
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.1);
 }
 
-/* ----- MOBILE RESPONSIVENESS ----- */
+/* ----- RESPONSIVE ----- */
 @media (max-width: 768px) {
     section.main > div { padding: 0 12px !important; }
-    .main-title { font-size: 2.8rem !important; letter-spacing: 2px !important; }
-    .subtitle { font-size: 1rem !important; }
+    .main-title { font-size: 2.8rem !important; letter-spacing: 4px !important; }
+    .subtitle { font-size: 0.7rem !important; letter-spacing: 3px !important; }
     .glass-hero { padding: 24px 12px !important; }
-    .metric-pill { font-size: 0.7rem !important; padding: 4px 12px !important; }
+    .metric-pill { font-size: 0.65rem !important; padding: 4px 12px !important; }
     .stFoliumMap { height: 350px !important; }
     [data-testid="stSidebar"] { min-width: 0px !important; max-width: 100% !important; }
-    .floating-emoji { display: none; }
-    section.main::before { width: 200vmax; height: 200vmax; } /* Reduce radar intensity on mobile */
+    section.main::before, section.main::after { display: none; } /* Save mobile performance */
 }
 @media (max-width: 480px) {
-    .main-title { font-size: 2.2rem !important; }
-    .section-title { font-size: 1.1rem !important; }
-    .status-badge { font-size: 0.6rem; padding: 2px 10px; }
-    .stButton button { font-size: 0.9rem !important; padding: 10px 16px !important; }
+    .main-title { font-size: 2.0rem !important; }
+    .section-title { font-size: 1.0rem !important; }
 }
 </style>
-""", unsafe_allow_html=True)
-
-# =====================================================
-# FLOATING EMOJIS (Inject Signature Decor)
-# =====================================================
-st.markdown("""
-<div class="floating-emoji" style="top:10%; left:5%;">🦟</div>
-<div class="floating-emoji" style="bottom:20%; right:3%; animation-delay: 3s; font-size: 3.5rem;">📡</div>
-<div class="floating-emoji" style="top:60%; left:2%; animation-delay: 6s; font-size: 2.2rem;">🧪</div>
 """, unsafe_allow_html=True)
 
 # =====================================================
@@ -478,7 +499,7 @@ def simulate_cases(base_cases, rainfall_pct, humidity_pct, temp_pct, wind_pct, s
                         (1 + temp_pct) * (1 + wind_pct) * season_factor))
 
 # =====================================================
-# PDF REPORT GENERATOR (Unchanged, kept perfect)
+# PDF REPORT GENERATOR (Unchanged for brevity, but perfect)
 # =====================================================
 
 def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
@@ -640,26 +661,26 @@ def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
 with st.sidebar:
     st.markdown("""
     <div style="text-align:center; margin-bottom:30px;">
-        <div style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:2.4rem; letter-spacing:4px; color:#F8FAFC;">DRIVE</div>
-        <div style="font-family:'Inter',sans-serif; font-weight:400; font-size:0.7rem; color:#60A5FA; letter-spacing:2px;">OBSIDIAN GLASS v2.0</div>
+        <div style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:2.2rem; letter-spacing:4px; background:linear-gradient(135deg,#00F0FF,#A855F7); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">DRIVE</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-weight:400; font-size:0.6rem; color:#2DD4BF; letter-spacing:3px; margin-top:2px;">BIOLUMINESCENT ABYSS</div>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown("**📍 Navigation**")
+    st.markdown("**📍 NAVIGATION**")
     st.markdown("• Dashboard")
     st.markdown("• Map")
     st.markdown("• Forecast")
     st.markdown("• Simulation")
     st.markdown("• Reports")
     st.markdown("---")
-    st.markdown("**⚙️ Forecast Settings**")
+    st.markdown("**⚙️ SONAR SETTINGS**")
     st.markdown("📌 Quezon City District II")
     st.markdown("📅 Year: 2026")
     st.markdown("---")
-    st.caption("© 2026 DRIVE · All rights reserved.")
+    st.caption("© 2026 DRIVE · Deep Surveillance")
 
 # =====================================================
-# HERO – OBSIDIAN GLASS EDITION
+# HERO – BIOLUMINESCENT ABYSS
 # =====================================================
 
 total_cases = int(predictions["Predicted_Cases"].sum())
@@ -669,26 +690,28 @@ n_barangays = predictions["Barangay"].nunique()
 
 st.markdown(f"""
 <div class="glass-hero">
-    <div style="position:absolute; top:-15px; left:25px; font-size:3.5rem; filter:drop-shadow(0 0 30px #3B82F6); z-index:2;">🦟</div>
-    <div style="position:absolute; bottom:-10px; right:25px; font-size:2.8rem; opacity:0.2; z-index:1;">🌡️</div>
-    <div class="main-title">DRIVE</div>
-    <div class="subtitle">Dengue Risk Intelligence · Visualization Engine</div>
-    <div style="font-family:'Inter',sans-serif; font-weight:400; color:#94A3B8; margin:6px 0 12px; display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; z-index:2; position:relative;">
-        <span><i class="fas fa-satellite-dish" style="color:#60A5FA;"></i> AI‑Powered Early Warning</span>
-        <span>·</span>
-        <span>Quezon City District II</span>
-        <span>·</span>
-        <span>2026</span>
-        <span class="status-badge"><span class="dot"></span> LIVE DATA</span>
-    </div>
-    <div style="z-index:2; position:relative;">
-        <span class="metric-pill"><i class="fas fa-database"></i> <strong>{total_cases:,}</strong> <span>total cases</span></span>
-        <span class="metric-pill"><i class="fas fa-triangle-exclamation"></i> <strong>{dom_risk}</strong> <span>risk level</span></span>
-        <span class="metric-pill"><i class="fas fa-chart-line"></i> <strong>{peak_cases}</strong> <span>peak month</span></span>
-        <span class="metric-pill"><i class="fas fa-city"></i> <strong>{n_barangays}</strong> <span>barangays</span></span>
-    </div>
-    <div style="margin-top:14px; font-family:'Inter',sans-serif; font-size:0.75rem; color:#64748B; z-index:2; position:relative;">
-        <i class="fas fa-sync-alt fa-fw fa-spin" style="color:#3B82F6;"></i> Last updated: April 2026
+    <div style="position:relative; z-index:2;">
+        <div style="position:absolute; top:-30px; left:10px; font-size:3.8rem; opacity:0.3; filter:drop-shadow(0 0 40px #00F0FF);">🦠</div>
+        <div style="position:absolute; bottom:-20px; right:10px; font-size:2.8rem; opacity:0.2; filter:drop-shadow(0 0 30px #A855F7);">🌊</div>
+        <div class="main-title">DRIVE</div>
+        <div class="subtitle">Dengue Risk Intelligence · Deep Surveillance</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-weight:300; color:#6A8CA0; margin:8px 0 16px; display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap; z-index:2; position:relative; font-size:0.8rem;">
+            <span><i class="fas fa-microchip" style="color:#00F0FF;"></i> AI-Powered Early Warning</span>
+            <span style="color:#3A5A6A;">|</span>
+            <span>Quezon City District II</span>
+            <span style="color:#3A5A6A;">|</span>
+            <span>2026</span>
+            <span class="status-badge"><span class="dot"></span> Active Sonar</span>
+        </div>
+        <div style="z-index:2; position:relative;">
+            <span class="metric-pill"><i class="fas fa-database"></i> <strong>{total_cases:,}</strong> <span>Total Cases</span></span>
+            <span class="metric-pill"><i class="fas fa-triangle-exclamation"></i> <strong style="color:#A855F7;">{dom_risk}</strong> <span>Risk Level</span></span>
+            <span class="metric-pill"><i class="fas fa-chart-line"></i> <strong style="color:#2DD4BF;">{peak_cases}</strong> <span>Peak Month</span></span>
+            <span class="metric-pill"><i class="fas fa-city"></i> <strong>{n_barangays}</strong> <span>Barangays</span></span>
+        </div>
+        <div style="margin-top:16px; font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:#3A5A6A; z-index:2; position:relative;">
+            <i class="fas fa-satellite" style="color:#2DD4BF;"></i> Last updated: April 2026 &nbsp;·&nbsp; <i class="fas fa-water" style="color:#00F0FF;"></i> Bioluminescent Abyss v3.0
+        </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -700,7 +723,7 @@ st.markdown(f"""
 st.markdown("""
 <div style="margin: 20px 0 8px;">
     <div class="section-title"><i class="fas fa-map"></i> Interactive Dengue Risk Map</div>
-    <div class="section-desc"><i class="fas fa-location-dot" style="color:#60A5FA;"></i> Visualizes predicted dengue intensity across monitored barangays.</div>
+    <div class="section-desc"><i class="fas fa-compass" style="color:#2DD4BF;"></i> Visualizing predicted dengue intensity across monitored barangays.</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -730,7 +753,7 @@ def style_function(feature):
     name = feature["properties"].get("name")
     row = map_data[map_data["Barangay"].str.lower() == str(name).lower()]
     color = case_color(row.iloc[0]["Predicted_Cases"]) if not row.empty else "#64748B"
-    return {"fillColor": color, "color": "white", "weight": 1, "fillOpacity": 0.7}
+    return {"fillColor": color, "color": "#00F0FF", "weight": 1.5, "fillOpacity": 0.6, "dashArray": '2'}
 
 folium.GeoJson(
     barangay_geojson,
@@ -741,22 +764,22 @@ folium.GeoJson(
 legend_html = """
 <div style="
 position: fixed; top: 20px; right: 20px;
-background: rgba(8, 20, 32, 0.85);
+background: rgba(6, 10, 18, 0.85);
 backdrop-filter: blur(16px);
-border: 1px solid rgba(255,255,255,0.1);
+border: 1px solid rgba(0, 240, 255, 0.15);
 border-radius: 16px;
 padding: 14px 18px;
-font-family: 'Inter', sans-serif;
-color: #F8FAFC;
-font-size: 13px;
-box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+font-family: 'JetBrains Mono', monospace;
+color: #E2F0FA;
+font-size: 12px;
+box-shadow: 0 8px 32px rgba(0,0,0,0.8);
 z-index: 9999;
 ">
-<b style="display:block; margin-bottom:8px;"><i class='fas fa-circle'></i> Case Intensity</b>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#22C55E; border-radius:4px;"></span> Low (&lt;50)</div>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#F59E0B; border-radius:4px;"></span> Moderate (50-60)</div>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#F97316; border-radius:4px;"></span> High (60-75)</div>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#EF4444; border-radius:4px;"></span> Extreme (>75)</div>
+<b style="display:block; margin-bottom:8px; color:#00F0FF;">CASE INTENSITY</b>
+<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#22C55E; border-radius:4px; box-shadow: 0 0 10px #22C55E;"></span> Low (&lt;50)</div>
+<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#F59E0B; border-radius:4px; box-shadow: 0 0 10px #F59E0B;"></span> Moderate (50-60)</div>
+<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#F97316; border-radius:4px; box-shadow: 0 0 10px #F97316;"></span> High (60-75)</div>
+<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#EF4444; border-radius:4px; box-shadow: 0 0 10px #EF4444;"></span> Extreme (>75)</div>
 </div>
 """
 m.get_root().html.add_child(folium.Element(legend_html))
@@ -792,17 +815,17 @@ with col_chart:
     )
     fig.update_traces(
         fill='tozeroy',
-        fillcolor='rgba(59, 130, 246, 0.15)',
-        line=dict(color='#3B82F6', width=2.5)
+        fillcolor='rgba(0, 240, 255, 0.15)',
+        line=dict(color='#00F0FF', width=3)
     )
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#CBD5E1"),
+        font=dict(color="#A0B8CC", family="JetBrains Mono"),
         margin=dict(l=20, r=20, t=20, b=20),
         height=400,
-        xaxis=dict(gridcolor="rgba(255,255,255,0.05)"),
-        yaxis=dict(gridcolor="rgba(255,255,255,0.05)")
+        xaxis=dict(gridcolor="rgba(0,240,255,0.05)", title=""),
+        yaxis=dict(gridcolor="rgba(0,240,255,0.05)", title="")
     )
     st.plotly_chart(
         fig,
@@ -815,7 +838,7 @@ with col_chart:
     )
 
 # =====================================================
-# HEATMAP – SCROLLABLE, POLISHED
+# HEATMAP – SCROLLABLE
 # =====================================================
 
 st.markdown("""
@@ -858,7 +881,7 @@ else:
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#CBD5E1", size=11),
+    font=dict(color="#A0B8CC", size=11),
     margin=dict(l=130, r=30, t=30, b=60),
     width=1000,
     autosize=False
@@ -884,6 +907,8 @@ scrollable_html = f"""
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x;
     cursor: grab;
+    border: 1px solid rgba(0,240,255,0.05);
+    border-radius: 20px;
 ">
     {html_str}
 </div>
@@ -898,7 +923,7 @@ st.markdown("""
 <div style="padding:25px;margin-top:35px;">
     <div class="section-title"><i class="fas fa-microscope"></i> What-If Simulation</div>
     <div class="section-desc">
-        <i class="fas fa-sliders" style="color:#60A5FA;"></i> Adjust environmental conditions to examine their potential effects on predicted dengue cases.
+        <i class="fas fa-sliders" style="color:#2DD4BF;"></i> Adjust environmental conditions to examine their potential effects on predicted dengue cases.
         This is a sensitivity analysis based on the model's baseline predictions.
     </div>
 </div>
@@ -970,7 +995,7 @@ st.markdown("""
 col_config, col_preview = st.columns([1, 1.5], gap="large")
 
 with col_config:
-    st.markdown("### <i class='fas fa-gear' style='color:#60A5FA;'></i> Report Configuration", unsafe_allow_html=True)
+    st.markdown("### <i class='fas fa-gear' style='color:#2DD4BF;'></i> Report Configuration", unsafe_allow_html=True)
     report_barangay = st.selectbox(
         "Select Barangay",
         predictions["Barangay"].unique(),
@@ -984,7 +1009,7 @@ with col_config:
     generate_btn = st.button("📄 Generate Comprehensive Report", use_container_width=True)
 
 with col_preview:
-    st.markdown("### <i class='fas fa-eye' style='color:#60A5FA;'></i> Report Preview", unsafe_allow_html=True)
+    st.markdown("### <i class='fas fa-eye' style='color:#A855F7;'></i> Report Preview", unsafe_allow_html=True)
 
     barangay_data = predictions[predictions["Barangay"] == report_barangay].sort_values("YearMonth")
     if not barangay_data.empty:
@@ -1068,13 +1093,13 @@ if generate_btn:
         st.error("Failed to generate report. Please try again.")
 
 # =====================================================
-# FOOTER – SIGNATURE MANTRA
+# FOOTER – SIGNATURE MANTRA (Abyss)
 # =====================================================
 
 st.markdown("""
 <div class="footer">
-    <i class="fas fa-satellite"></i> DRIVE · Obsidian Glass Edition · 
-    <span class="mantra">"Data is the compass – but action is the voyage."</span> · 
-    <i class="fas fa-shield-halved"></i> © 2026
+    <i class="fas fa-satellite-dish"></i> DRIVE · Bioluminescent Abyss Edition · 
+    <span class="mantra">"In the silence of the deep, the data speaks."</span> · 
+    <i class="fas fa-water"></i> © 2026
 </div>
 """, unsafe_allow_html=True)
