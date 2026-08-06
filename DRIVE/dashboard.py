@@ -689,7 +689,7 @@ with col_chart:
     st.plotly_chart(fig, use_container_width=True)
 
 # =====================================================
-# HEATMAP – FINAL SCROLLABLE VERSION (st.components.v1.html)
+# HEATMAP – FINAL SCROLLABLE (No Zoom on Mobile)
 # =====================================================
 
 st.markdown("""
@@ -729,7 +729,7 @@ else:
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
 
-# --- Layout: fixed width, NO fixed height (auto-calculated by aspect='equal') ---
+# --- Layout: fixed width, NO fixed height ---
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
@@ -739,18 +739,29 @@ fig.update_layout(
     autosize=False
 )
 
-# --- Generate HTML with fixed width and responsive=False ---
+# --- Generate HTML with scrollZoom disabled ---
 html_str = fig.to_html(
     include_plotlyjs='cdn',
-    config={'displayModeBar': False, 'responsive': False},
+    config={
+        'displayModeBar': False,
+        'responsive': False,
+        'scrollZoom': False,        # <-- DISABLES ZOOM ON MOBILE
+        'doubleClick': False,       # <-- Prevents double-click zoom
+        'showTips': False
+    },
     full_html=False,
-    default_width='1200px',
-    # No default_height – Plotly will use its own calculated height
+    default_width='1200px'
 )
 
-# --- Wrap in a scrollable div ---
+# --- Wrap in a scrollable div with touch-friendly scroll ---
 scrollable_html = f"""
-<div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch;">
+<div style="
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;          /* <-- Restricts touch to horizontal pan only */
+    cursor: grab;
+">
     {html_str}
 </div>
 """
