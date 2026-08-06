@@ -28,8 +28,8 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.lib.units import inch
 
 from utils import classify_risk_4level
-
-
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 # =====================================================
 # PAGE CONFIG
 # =====================================================
@@ -239,7 +239,8 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
 
 @st.cache_data
 def load_predictions():
-    return pd.read_csv("predictions_2026_final.csv")
+    file_path = os.path.join(SCRIPT_DIR, "predictions_2026_final.csv")
+    return pd.read_csv(file_path)
 
 predictions = load_predictions()
 
@@ -528,8 +529,9 @@ def style_function(feature):
 
 @st.cache_data
 def load_geojson():
-    with open("qc_barangays.geojson", "r", encoding="utf-8") as f:
-        return json.load(f)
+    file_path = os.path.join(SCRIPT_DIR, "qc_barangays.geojson")
+    with open(file_path, "r", encoding="utf-8") as f:
+    return json.load(f)
 
 barangay_geojson = load_geojson()
 folium.GeoJson(
