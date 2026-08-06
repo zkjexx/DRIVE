@@ -239,10 +239,36 @@ p, li, .stMarkdown {
     font-size: 0.75rem;
 }
 
-/* Labels */
-.stSelectbox label, .stSlider label {
+/* =============================================
+   DARK THEME DROPDOWN (selectbox)
+   ============================================= */
+.stSelectbox label {
     color: #94A3B8 !important;
     font-weight: 400 !important;
+}
+.stSelectbox > div > div {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    color: #F8FAFC !important;
+}
+.stSelectbox > div > div:hover {
+    border-color: #3B82F6 !important;
+}
+.stSelectbox > div > div > div {
+    color: #F8FAFC !important;
+}
+/* Dropdown options menu */
+.stSelectbox > div > div > div > div {
+    background: #0B2035 !important;
+    color: #F8FAFC !important;
+}
+.stSelectbox > div > div > div > div > div {
+    background: #0B2035 !important;
+    color: #F8FAFC !important;
+}
+.stSelectbox > div > div > div > div > div:hover {
+    background: rgba(59, 130, 246, 0.2) !important;
 }
 
 /* =============================================
@@ -317,7 +343,10 @@ p, li, .stMarkdown {
     .stDataFrame td, .stDataFrame th {
         padding: 2px 4px !important;
     }
-    /* No extra overrides for heatmap – it's now in st.components */
+    /* Make selectbox full width on mobile */
+    .stSelectbox {
+        width: 100% !important;
+    }
 }
 
 /* Force columns to stack on mobile */
@@ -689,7 +718,7 @@ with col_chart:
     st.plotly_chart(fig, use_container_width=True)
 
 # =====================================================
-# HEATMAP – FINAL SCROLLABLE (No Zoom on Mobile)
+# HEATMAP – SCROLLABLE, REDUCED SIZE, DARK DROPDOWN
 # =====================================================
 
 st.markdown("""
@@ -729,13 +758,13 @@ else:
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
 
-# --- Layout: fixed width, NO fixed height ---
+# --- Layout: reduced width (1000px) and larger left margin to avoid overlap ---
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#CBD5E1", size=12),
-    margin=dict(l=20, r=20, t=20, b=20),
-    width=1200,
+    font=dict(color="#CBD5E1", size=11),
+    margin=dict(l=50, r=20, t=20, b=20),   # increased left margin for y-axis labels
+    width=1000,                            # reduced from 1200 to 1000
     autosize=False
 )
 
@@ -745,29 +774,29 @@ html_str = fig.to_html(
     config={
         'displayModeBar': False,
         'responsive': False,
-        'scrollZoom': False,        # <-- DISABLES ZOOM ON MOBILE
-        'doubleClick': False,       # <-- Prevents double-click zoom
+        'scrollZoom': False,
+        'doubleClick': False,
         'showTips': False
     },
     full_html=False,
-    default_width='1200px'
+    default_width='1000px'
 )
 
-# --- Wrap in a scrollable div with touch-friendly scroll ---
+# --- Wrap in a scrollable div with horizontal touch restriction ---
 scrollable_html = f"""
 <div style="
     overflow-x: auto;
     width: 100%;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;          /* <-- Restricts touch to horizontal pan only */
+    touch-action: pan-x;
     cursor: grab;
 ">
     {html_str}
 </div>
 """
 
-# --- Inject with st.components ---
-st.components.v1.html(scrollable_html, height=520)
+# --- Inject with st.components, reduced height ---
+st.components.v1.html(scrollable_html, height=450)   # lower height to avoid overlap
 
 # =====================================================
 # WHAT‑IF SIMULATION
