@@ -218,7 +218,7 @@ p, li, .stMarkdown {
     border: 2px solid #F8FAFC !important;
 }
 
-/* Plotly */
+/* Plotly (for other charts) */
 .js-plotly-plot .plotly .main-svg {
     background: transparent !important;
 }
@@ -226,30 +226,6 @@ p, li, .stMarkdown {
     background: rgba(255, 255, 255, 0.03) !important;
     border-radius: 8px !important;
     border: 1px solid rgba(255, 255, 255, 0.06) !important;
-}
-
-/* =============================================
-   HEATMAP: Horizontal Scroll on Mobile
-   ============================================= */
-.js-plotly-plot {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-}
-/* Ensure the plot container respects the fixed width */
-.js-plotly-plot .plotly {
-    min-width: 800px !important;
-    width: 800px !important;
-}
-
-@media (max-width: 640px) {
-    .js-plotly-plot {
-        overflow-x: auto !important;
-        width: 100% !important;
-    }
-    .js-plotly-plot .plotly {
-        min-width: 800px !important;
-        width: 800px !important;
-    }
 }
 
 /* Footer */
@@ -341,17 +317,7 @@ p, li, .stMarkdown {
     .stDataFrame td, .stDataFrame th {
         padding: 2px 4px !important;
     }
-    .js-plotly-plot {
-        height: 300px !important;
-        width: 100% !important;
-    }
-    .js-plotly-plot .plotly .annotation-text {
-        font-size: 9px !important;
-    }
-    .js-plotly-plot .plotly .ytick text,
-    .js-plotly-plot .plotly .xtick text {
-        font-size: 8px !important;
-    }
+    /* No extra overrides for heatmap – it's now in st.components */
 }
 
 /* Force columns to stack on mobile */
@@ -723,7 +689,7 @@ with col_chart:
     st.plotly_chart(fig, use_container_width=True)
 
 # =====================================================
-# HEATMAP – Fixed Width + Horizontal Scroll
+# HEATMAP – FINAL SCROLLABLE VERSION (st.components.v1.html)
 # =====================================================
 
 st.markdown("""
@@ -763,26 +729,34 @@ else:
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
 
-# Fixed width: 800px ensures enough space for all 12 months
+# --- Layout: fixed width, NO fixed height (auto-calculated by aspect='equal') ---
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#CBD5E1"),
+    font=dict(color="#CBD5E1", size=12),
     margin=dict(l=20, r=20, t=20, b=20),
-    height=400,
-    width=800
+    width=1200,
+    autosize=False
 )
 
-# =====================================================
-# CRITICAL WRAPPER: Forces horizontal scroll
-# =====================================================
-st.markdown('<div style="overflow-x: auto; width: 100%;">', unsafe_allow_html=True)
-st.plotly_chart(
-    fig,
-    use_container_width=True,
-    config={'displayModeBar': False, 'responsive': False}  # <-- Disables auto‑resize
+# --- Generate HTML with fixed width and responsive=False ---
+html_str = fig.to_html(
+    include_plotlyjs='cdn',
+    config={'displayModeBar': False, 'responsive': False},
+    full_html=False,
+    default_width='1200px',
+    # No default_height – Plotly will use its own calculated height
 )
-st.markdown('</div>', unsafe_allow_html=True)
+
+# --- Wrap in a scrollable div ---
+scrollable_html = f"""
+<div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch;">
+    {html_str}
+</div>
+"""
+
+# --- Inject with st.components ---
+st.components.v1.html(scrollable_html, height=520)
 
 # =====================================================
 # WHAT‑IF SIMULATION
