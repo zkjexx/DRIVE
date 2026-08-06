@@ -28,8 +28,12 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.lib.units import inch
 
 from utils import classify_risk_4level
-import os
+
+# =====================================================
+# FIX: Make sure Python looks in the SAME FOLDER as dashboard.py
+# =====================================================
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # =====================================================
 # PAGE CONFIG
 # =====================================================
@@ -40,9 +44,8 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-
 # =====================================================
-# CSS – Clean & Minimal
+# CSS – Clean, Minimal & Mobile-Friendly
 # =====================================================
 
 st.markdown("""
@@ -215,26 +218,88 @@ h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     font-size: 0.75rem;
 }
 
-@media (max-width: 640px) {
+/* =============================================
+   MOBILE-FRIENDLY OVERRIDES
+   ============================================= */
+@media (max-width: 768px) {
     .main-title {
         font-size: 2.6rem !important;
     }
     .subtitle {
         font-size: 1rem !important;
     }
+    .glass-hero {
+        padding: 24px 12px !important;
+    }
     .metric-pill {
-        display: inline-block !important;
-        margin: 4px 4px !important;
         font-size: 0.75rem !important;
         padding: 4px 12px !important;
+    }
+    .stFoliumMap {
+        height: 400px !important;
+    }
+    .stFoliumMap iframe {
+        height: 400px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 2.0rem !important;
+        letter-spacing: 1px !important;
+    }
+    .subtitle {
+        font-size: 0.8rem !important;
+    }
+    .glass-hero {
+        padding: 16px 8px !important;
+        border-radius: 16px !important;
+    }
+    .metric-pill {
+        font-size: 0.65rem !important;
+        padding: 3px 8px !important;
+        margin: 2px 2px !important;
+    }
+    .stFoliumMap {
+        height: 300px !important;
+    }
+    .stFoliumMap iframe {
+        height: 300px !important;
+    }
+    .stButton button {
+        font-size: 0.9rem !important;
+        padding: 10px 16px !important;
+        min-height: 48px !important;
+    }
+    .section-title {
+        font-size: 1.1rem !important;
+    }
+    .stDataFrame {
+        font-size: 0.65rem !important;
+    }
+    .stDataFrame td, .stDataFrame th {
+        padding: 2px 4px !important;
+    }
+    .js-plotly-plot {
+        height: 280px !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .row-widget.stColumns {
+        flex-direction: column !important;
+    }
+    .row-widget.stColumns > div {
+        width: 100% !important;
+        flex: unset !important;
+        margin-bottom: 16px !important;
     }
 }
 </style>
 """, unsafe_allow_html=True)
 
-
 # =====================================================
-# DATA LOADING
+# DATA LOADING – FIXED: load_geojson() is now HERE
 # =====================================================
 
 @st.cache_data
@@ -242,7 +307,15 @@ def load_predictions():
     file_path = os.path.join(SCRIPT_DIR, "predictions_2026_final.csv")
     return pd.read_csv(file_path)
 
+@st.cache_data
+def load_geojson():
+    file_path = os.path.join(SCRIPT_DIR, "qc_barangays.geojson")
+    with open(file_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+# Load both datasets
 predictions = load_predictions()
+barangay_geojson = load_geojson()
 
 risk_colors = {
     "Safe": "green",
@@ -257,7 +330,6 @@ risk_values = {
     "Extreme": 4
 }
 
-
 # =====================================================
 # HEURISTIC SIMULATION (no model required)
 # =====================================================
@@ -269,7 +341,6 @@ def simulate_cases(base_cases, rainfall_pct, humidity_pct, temp_pct, wind_pct, s
     """
     return max(0, round(base_cases * (1 + rainfall_pct) * (1 + humidity_pct) *
                         (1 + temp_pct) * (1 + wind_pct) * season_factor))
-
 
 # =====================================================
 # PDF REPORT GENERATOR
@@ -439,7 +510,6 @@ def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
     doc.build(story)
     return filename
 
-
 # =====================================================
 # SIDEBAR
 # =====================================================
@@ -464,7 +534,6 @@ with st.sidebar:
     st.markdown("📅 Year: 2026")
     st.markdown("---")
     st.caption("© 2026 DRIVE · All rights reserved.")
-
 
 # =====================================================
 # HERO
@@ -492,9 +561,8 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-
 # =====================================================
-# INTERACTIVE RISK MAP
+# INTERACTIVE RISK MAP – FIXED: load_geojson() is already defined
 # =====================================================
 
 st.markdown("""
@@ -527,13 +595,7 @@ def style_function(feature):
     color = case_color(row.iloc[0]["Predicted_Cases"]) if not row.empty else "#64748B"
     return {"fillColor": color, "color": "white", "weight": 1, "fillOpacity": 0.7}
 
-@st.cache_data
-def load_geojson():
-    file_path = os.path.join(SCRIPT_DIR, "qc_barangays.geojson")
-    with open(file_path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-barangay_geojson = load_geojson()
+# NOW barangay_geojson is already loaded from the top
 folium.GeoJson(
     barangay_geojson,
     style_function=style_function,
@@ -564,8 +626,8 @@ z-index: 9999;
 """
 m.get_root().html.add_child(folium.Element(legend_html))
 
-st_folium(m, width=1200, height=650)
-
+# FIXED: Responsive map
+st_folium(m, use_container_width=True, height=400)
 
 # =====================================================
 # FORECAST TABLE & TREND CHART
@@ -609,7 +671,6 @@ with col_chart:
         yaxis=dict(gridcolor="rgba(255,255,255,0.05)")
     )
     st.plotly_chart(fig, use_container_width=True)
-
 
 # =====================================================
 # HEATMAP
@@ -659,7 +720,6 @@ fig.update_layout(
     height=500
 )
 st.plotly_chart(fig, use_container_width=True)
-
 
 # =====================================================
 # WHAT‑IF SIMULATION (Heuristic)
@@ -722,7 +782,6 @@ m1, m2, m3 = st.columns(3)
 m1.metric("🦟 Simulated Cases", f"{sim_cases:.0f}")
 m2.metric("⚠ Risk Level", sim_risk)
 m3.metric("📈 Case Difference", f"{sim_cases - base['Predicted_Cases']:+.0f}")
-
 
 # =====================================================
 # AUTOMATED REPORT GENERATOR
@@ -838,7 +897,6 @@ if generate_btn:
             )
     else:
         st.error("Failed to generate report. Please try again.")
-
 
 # =====================================================
 # FOOTER
