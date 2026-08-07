@@ -587,7 +587,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # =====================================================
-# INTERACTIVE RISK MAP (FIX: Cached function ensures 1st-load rendering)
+# INTERACTIVE RISK MAP (FIX: Dynamic key + robust string matching)
 # =====================================================
 
 st.markdown("""
@@ -597,128 +597,115 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Force default month
+# FIX: Strip and convert to strict string to avoid hidden formatting issues
+month_options = sorted(predictions["YearMonth"].astype(str).unique())
 selected_month = st.selectbox(
     "Select Forecast Month",
-    sorted(predictions["YearMonth"].unique()),
+    month_options,
     index=0,
     key="map_month"
 )
 
-# --- Map Generation Logic wrapped in a cached resource function ---
-@st.cache_resource(show_spinner=False)
-def generate_map(_predictions, _barangay_geojson, selected_month):
-    # Base Map
-    map_center = [14.6760, 121.0437]
-    m = folium.Map(
-        location=map_center,
-        zoom_start=12,
-        tiles="cartodbpositron",
-        scrollWheelZoom=False
-    )
+map_center = [14.6760, 121.0437]
+m = folium.Map(
+    location=map_center,
+    zoom_start=12,
+    tiles="cartodbpositron",
+    scrollWheelZoom=False
+)
 
-    # Fullscreen control for better UX
-    folium.plugins.Fullscreen().add_to(m)
+# Add Fullscreen control
+folium.plugins.Fullscreen().add_to(m)
 
-    map_data = _predictions[_predictions["YearMonth"] == selected_month]
+# FIX: Ensure strict string comparison
+map_data = predictions[predictions["YearMonth"].astype(str) == selected_month]
 
-    def case_color(cases):
-        if cases < 50: return "#00F0FF"
-        elif cases < 60: return "#2DD4BF"
-        elif cases < 75: return "#A855F7"
-        else: return "#FF006E"
+def case_color(cases):
+    if cases < 50: return "#00F0FF"
+    elif cases < 60: return "#2DD4BF"
+    elif cases < 75: return "#A855F7"
+    else: return "#FF006E"
 
-    def style_function(feature):
-        name = feature["properties"].get("name")
-        row = map_data[map_data["Barangay"].str.lower() == str(name).lower()]
-        color = case_color(row.iloc[0]["Predicted_Cases"]) if not row.empty else "#64748B"
-        return {
-            "fillColor": color, 
-            "color": "#A855F7",     
-            "weight": 1.0,          
-            "fillOpacity": 0.5,     
-            "dashArray": '2'
-        }
+def style_function(feature):
+    name = feature["properties"].get("name")
+    # FIX: Strip spaces and lowercase for comparison to prevent mismatches
+    if not name:
+        return {"fillColor": "#64748B", "color": "#A855F7", "weight": 1.0, "fillOpacity": 0.5, "dashArray": '2'}
+    barangay_name = str(name).strip().lower()
+    row = map_data[map_data["Barangay"].str.strip().str.lower() == barangay_name]
+    color = case_color(row.iloc[0]["Predicted_Cases"]) if not row.empty else "#64748B"
+    return {
+        "fillColor": color, 
+        "color": "#A855F7",     
+        "weight": 1.0,          
+        "fillOpacity": 0.5,     
+        "dashArray": '2'
+    }
 
-    # --- Add cases to GeoJSON properties for tooltip ---
-    geojson_with_cases = _barangay_geojson.copy()
-    for feature in geojson_with_cases['features']:
-        name = feature['properties'].get('name')
-        row = map_data[map_data['Barangay'].str.lower() == str(name).lower()]
+# --- Add cases to GeoJSON properties for tooltip ---
+geojson_with_cases = barangay_geojson.copy()
+for feature in geojson_with_cases['features']:
+    name = feature['properties'].get('name')
+    if name:
+        barangay_name = str(name).strip().lower()
+        row = map_data[map_data["Barangay"].str.strip().str.lower() == barangay_name]
         if not row.empty:
             feature['properties']['cases'] = int(row.iloc[0]['Predicted_Cases'])
         else:
             feature['properties']['cases'] = None
 
-    # Draw the Polygons (Safe from race condition now)
-    folium.GeoJson(
-        geojson_with_cases,
-        style_function=style_function,
-        tooltip=folium.GeoJsonTooltip(
-            fields=["name", "cases"],
-            aliases=["Barangay:", "Predicted Cases:"],
-            localize=True
-        )
-    ).add_to(m)
+folium.GeoJson(
+    geojson_with_cases,
+    style_function=style_function,
+    tooltip=folium.GeoJsonTooltip(
+        fields=["name", "cases"],
+        aliases=["Barangay:", "Predicted Cases:"],
+        localize=True
+    )
+).add_to(m)
 
-    # ---------------------------------------------------------
-    # 💡 OPTIONAL: ADD YOUR BLUE MARKERS HERE
-    # If you want your blue pins to appear instantly on first load, 
-    # uncomment the lines below and populate your coordinates.
-    # ---------------------------------------------------------
-    # marker_cluster = folium.plugins.MarkerCluster().add_to(m)
-    # for _, row in map_data.iterrows():
-    #     # Replace these lat/lon with your actual Barangay data
-    #     folium.Marker(
-    #         location=[14.6760, 121.0437], 
-    #         popup=row['Barangay'],
-    #         icon=folium.Icon(color='blue', icon='info-sign')
-    #     ).add_to(marker_cluster)
+# Responsive legend (same as before)
+legend_html = """
+<style>
+.legend-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(6, 10, 18, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    border-radius: 16px;
+    padding: 14px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    color: #E2F0FA;
+    font-size: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+    z-index: 9999;
+    max-width: 200px;
+}
+.legend-container b { display: block; margin-bottom: 8px; color: #00F0FF; }
+.legend-item { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+.legend-color { display: inline-block; width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+@media (max-width: 768px) {
+    .legend-container { top: auto; bottom: 20px; right: 10px; padding: 10px 12px; font-size: 10px; max-width: 150px; border-radius: 12px; }
+    .legend-container b { font-size: 11px; margin-bottom: 4px; }
+    .legend-color { width: 10px; height: 10px; }
+}
+</style>
+<div class="legend-container">
+    <b>CASE INTENSITY</b>
+    <div class="legend-item"><span class="legend-color" style="background:#00F0FF; box-shadow: 0 0 10px #00F0FF;"></span> Low (&lt;50)</div>
+    <div class="legend-item"><span class="legend-color" style="background:#2DD4BF; box-shadow: 0 0 10px #2DD4BF;"></span> Moderate (50-60)</div>
+    <div class="legend-item"><span class="legend-color" style="background:#A855F7; box-shadow: 0 0 10px #A855F7;"></span> High (60-75)</div>
+    <div class="legend-item"><span class="legend-color" style="background:#FF006E; box-shadow: 0 0 10px #FF006E;"></span> Extreme (>75)</div>
+</div>
+"""
+m.get_root().html.add_child(folium.Element(legend_html))
 
-    # Responsive legend
-    legend_html = """
-    <style>
-    .legend-container {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: rgba(6, 10, 18, 0.85);
-        backdrop-filter: blur(16px);
-        border: 1px solid rgba(0, 240, 255, 0.15);
-        border-radius: 16px;
-        padding: 14px 18px;
-        font-family: 'JetBrains Mono', monospace;
-        color: #E2F0FA;
-        font-size: 12px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.8);
-        z-index: 9999;
-        max-width: 200px;
-    }
-    .legend-container b { display: block; margin-bottom: 8px; color: #00F0FF; }
-    .legend-item { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
-    .legend-color { display: inline-block; width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
-    @media (max-width: 768px) {
-        .legend-container { top: auto; bottom: 20px; right: 10px; padding: 10px 12px; font-size: 10px; max-width: 150px; border-radius: 12px; }
-        .legend-container b { font-size: 11px; margin-bottom: 4px; }
-        .legend-color { width: 10px; height: 10px; }
-    }
-    </style>
-    <div class="legend-container">
-        <b>CASE INTENSITY</b>
-        <div class="legend-item"><span class="legend-color" style="background:#00F0FF; box-shadow: 0 0 10px #00F0FF;"></span> Low (&lt;50)</div>
-        <div class="legend-item"><span class="legend-color" style="background:#2DD4BF; box-shadow: 0 0 10px #2DD4BF;"></span> Moderate (50-60)</div>
-        <div class="legend-item"><span class="legend-color" style="background:#A855F7; box-shadow: 0 0 10px #A855F7;"></span> High (60-75)</div>
-        <div class="legend-item"><span class="legend-color" style="background:#FF006E; box-shadow: 0 0 10px #FF006E;"></span> Extreme (>75)</div>
-    </div>
-    """
-    m.get_root().html.add_child(folium.Element(legend_html))
-    
-    # Return the fully constructed map object
-    return m
-
-# Generate the map from the cached function and render it
-m = generate_map(predictions, barangay_geojson, selected_month)
-st_folium(m, use_container_width=True, height=400, key="dengue_map", returned_objects=[])
+# FIX: Use a DYNAMIC key based on the selected month + returned_objects=[] 
+# This forces the frontend to completely REMOUNT the map when the month changes, 
+# solving the "first load" and "some months blank" issues.
+st_folium(m, use_container_width=True, height=400, key=f"dengue_map_{selected_month}", returned_objects=[])
 
 # =====================================================
 # FORECAST TABLE & TREND CHART
