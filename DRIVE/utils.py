@@ -1,7 +1,7 @@
 # =====================================================
 # D.R.I.V.E.
 # utils.py
-# Core Utility Functions (Robust)
+# Core Utility Functions
 # =====================================================
 
 import numpy as np
@@ -20,9 +20,8 @@ def add_seasonality(df, month_column="Month"):
     df["month_cos"] = np.cos(2 * np.pi * df[month_column] / 12)
     return df
 
-
 # =====================================================
-# 4-LEVEL RISK CLASSIFICATION (Robust)
+# 4-LEVEL RISK CLASSIFICATION
 # =====================================================
 
 def classify_risk_4level(cases, mu, sigma):
@@ -31,32 +30,13 @@ def classify_risk_4level(cases, mu, sigma):
     and standard deviation (sigma).
     
     Parameters:
-        cases (float/int/array): Predicted cases (or upper bound)
-        mu (float/int/array): Historical mean cases
-        sigma (float/int/array): Historical standard deviation
+        cases (float or int): Predicted cases (or upper bound)
+        mu (float): Historical mean cases
+        sigma (float): Historical standard deviation
     
     Returns:
         str: 'Safe', 'Moderate', 'High', or 'Extreme'
     """
-    # --- Force scalars (convert Series/arrays to single values) ---
-    def to_scalar(value):
-        if hasattr(value, 'item'):   # numpy array or pandas Series
-            return value.item()
-        elif hasattr(value, 'iloc'): # pandas Series/DataFrame
-            return value.iloc[0]
-        else:
-            return value
-
-    cases = to_scalar(cases)
-    mu = to_scalar(mu)
-    sigma = to_scalar(sigma)
-
-    # Convert to float to be safe
-    cases = float(cases)
-    mu = float(mu)
-    sigma = float(sigma)
-
-    # --- Classify ---
     if cases < mu:
         return "Safe"
     elif cases < mu + 0.5 * sigma:
@@ -65,7 +45,6 @@ def classify_risk_4level(cases, mu, sigma):
         return "High"
     else:
         return "Extreme"
-
 
 # =====================================================
 # HISTORICAL STATISTICS
@@ -78,7 +57,6 @@ def compute_historical_stats(df):
         .reset_index()
     )
     return stats
-
 
 # =====================================================
 # PREDICTION COVERAGE
@@ -96,7 +74,6 @@ def calculate_prediction_coverage(actual, lower, upper):
     coverage = (covered.sum() / len(actual)) * 100
     
     return round(coverage, 2)
-
 
 # =====================================================
 # BASELINE COMPARISON
