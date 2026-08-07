@@ -50,11 +50,9 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-/* ----- FONTS & ICONS ----- */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=JetBrains+Mono:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
 
-/* ----- RESET & BASE ----- */
 html, body, .stApp {
     background: #060A12 !important;
     margin: 0 !important;
@@ -71,7 +69,6 @@ section.main > div {
     padding: 0 24px !important;
 }
 
-/* ----- TYPOGRAPHY (Brighter) ----- */
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     font-family: 'JetBrains Mono', 'Inter', monospace !important;
     color: #E2F0FA !important;
@@ -129,7 +126,6 @@ p, li, .stMarkdown, .stSelectbox, .stSlider {
     font-size: 1.3rem;
 }
 
-/* ----- GLASS PANELS ----- */
 .glass-hero {
     background: rgba(6, 10, 18, 0.65) !important;
     backdrop-filter: blur(24px) !important;
@@ -154,7 +150,6 @@ p, li, .stMarkdown, .stSelectbox, .stSlider {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
-/* ----- SIDEBAR ----- */
 [data-testid="stSidebar"] {
     background: rgba(6, 10, 18, 0.9) !important;
     backdrop-filter: blur(24px) !important;
@@ -167,7 +162,6 @@ p, li, .stMarkdown, .stSelectbox, .stSlider {
     font-size: 0.9rem;
 }
 
-/* ----- METRIC PILLS ----- */
 .metric-pill {
     display: inline-block;
     background: rgba(0, 240, 255, 0.04);
@@ -197,7 +191,6 @@ p, li, .stMarkdown, .stSelectbox, .stSlider {
     margin-right: 6px;
 }
 
-/* ----- BUTTONS ----- */
 .stButton > button {
     background: linear-gradient(135deg, #00F0FF, #A855F7) !important;
     border: none !important;
@@ -215,7 +208,6 @@ p, li, .stMarkdown, .stSelectbox, .stSlider {
     box-shadow: 0 0 50px rgba(0, 240, 255, 0.4) !important;
 }
 
-/* ----- DATAFRAME ----- */
 .stDataFrame {
     background: rgba(6, 10, 18, 0.8) !important;
     border-radius: 18px !important;
@@ -230,7 +222,6 @@ p, li, .stMarkdown, .stSelectbox, .stSlider {
     color: #E2F0FA !important;
 }
 
-/* ----- SLIDERS ----- */
 .stSlider > div > div > div > input {
     background: #A855F7 !important;
     height: 4px !important;
@@ -244,7 +235,6 @@ p, li, .stMarkdown, .stSelectbox, .stSlider {
     box-shadow: 0 0 25px #00F0FF;
 }
 
-/* ----- SELECTBOX ----- */
 .stSelectbox label {
     color: #94A3B8 !important;
     font-weight: 500 !important;
@@ -263,7 +253,6 @@ p, li, .stMarkdown, .stSelectbox, .stSlider {
     color: #E2F0FA !important;
 }
 
-/* ----- METRIC CARDS ----- */
 .stMetric {
     background: rgba(6, 10, 18, 0.5) !important;
     border: 1px solid rgba(0, 240, 255, 0.1) !important;
@@ -284,12 +273,10 @@ p, li, .stMarkdown, .stSelectbox, .stSlider {
     color: #2DD4BF !important;
 }
 
-/* ----- SCROLLBAR ----- */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: #060A12; }
 ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #00F0FF, #A855F7); border-radius: 10px; }
 
-/* ----- FOOTER ----- */
 .footer {
     text-align: center;
     padding: 30px 0 20px;
@@ -303,7 +290,6 @@ p, li, .stMarkdown, .stSelectbox, .stSlider {
 .footer i { color: #2DD4BF; margin: 0 6px; }
 .footer .mantra { color: #A855F7; font-weight: 300; text-shadow: 0 0 20px rgba(168, 85, 247, 0.1); }
 
-/* ----- RESPONSIVE ----- */
 @media (max-width: 768px) {
     section.main > div { padding: 0 12px !important; }
     .main-title { font-size: 2.8rem !important; letter-spacing: 4px !important; }
@@ -364,7 +350,7 @@ def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
 
     total_cases = int(barangay_data["Predicted_Cases"].sum())
     peak_row = barangay_data.loc[barangay_data["Predicted_Cases"].idxmax()]
-    peak_month = pd.to_datetime(peak_row["YearMonth"]).strftime("%B %Y")  # full month + year
+    peak_month = pd.to_datetime(peak_row["YearMonth"]).strftime("%B %Y")
     peak_cases = int(peak_row["Predicted_Cases"])
 
     risk_order = {"Safe": 1, "Moderate": 2, "High": 3, "Extreme": 4}
@@ -531,6 +517,16 @@ with st.sidebar:
     st.markdown("📌 Quezon City District II")
     st.markdown("📅 Year: 2026")
     st.markdown("---")
+    st.markdown("**📊 MODEL ACCURACY**")
+    st.markdown(f"""
+    <div style="background:rgba(6,10,18,0.5); border:1px solid rgba(0,240,255,0.08); border-radius:12px; padding:12px; font-size:0.8rem;">
+        <div><span style="color:#94A3B8;">MAE:</span> <strong style="color:#00F0FF;">15.39</strong> <span style="color:#64748B;">cases/month</span></div>
+        <div><span style="color:#94A3B8;">RMSE:</span> <strong style="color:#00F0FF;">21.05</strong> <span style="color:#64748B;">cases/month</span></div>
+        <div><span style="color:#94A3B8;">Improvement:</span> <strong style="color:#2DD4BF;">51.5%</strong> <span style="color:#64748B;">vs baseline</span></div>
+        <div><span style="color:#94A3B8;">p-value:</span> <strong style="color:#A855F7;">&lt;0.01</strong></div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("---")
     with st.expander("ℹ️ Help & About", expanded=False):
         st.markdown("""
         **What is DRIVE?**  
@@ -543,7 +539,7 @@ with st.sidebar:
         4. Generate **PDF reports** for any barangay.
 
         **Data:** Trained on 2023–2024 cases, validated on 2025.  
-        **Accuracy:** MAE = ±12.3 cases.
+        **Accuracy:** MAE = ±15.39 cases.
 
         *For questions, contact your barangay health center.*
         """)
@@ -587,7 +583,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # =====================================================
-# INTERACTIVE RISK MAP (FIX: Dynamic key + robust string matching)
+# INTERACTIVE RISK MAP
 # =====================================================
 
 st.markdown("""
@@ -597,7 +593,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# FIX: Strip and convert to strict string to avoid hidden formatting issues
 month_options = sorted(predictions["YearMonth"].astype(str).unique())
 selected_month = st.selectbox(
     "Select Forecast Month",
@@ -614,10 +609,8 @@ m = folium.Map(
     scrollWheelZoom=False
 )
 
-# Add Fullscreen control
 folium.plugins.Fullscreen().add_to(m)
 
-# FIX: Ensure strict string comparison
 map_data = predictions[predictions["YearMonth"].astype(str) == selected_month]
 
 def case_color(cases):
@@ -628,21 +621,19 @@ def case_color(cases):
 
 def style_function(feature):
     name = feature["properties"].get("name")
-    # FIX: Strip spaces and lowercase for comparison to prevent mismatches
     if not name:
         return {"fillColor": "#64748B", "color": "#A855F7", "weight": 1.0, "fillOpacity": 0.5, "dashArray": '2'}
     barangay_name = str(name).strip().lower()
     row = map_data[map_data["Barangay"].str.strip().str.lower() == barangay_name]
     color = case_color(row.iloc[0]["Predicted_Cases"]) if not row.empty else "#64748B"
     return {
-        "fillColor": color, 
-        "color": "#A855F7",     
-        "weight": 1.0,          
-        "fillOpacity": 0.5,     
+        "fillColor": color,
+        "color": "#A855F7",
+        "weight": 1.0,
+        "fillOpacity": 0.5,
         "dashArray": '2'
     }
 
-# --- Add cases to GeoJSON properties for tooltip ---
 geojson_with_cases = barangay_geojson.copy()
 for feature in geojson_with_cases['features']:
     name = feature['properties'].get('name')
@@ -664,7 +655,6 @@ folium.GeoJson(
     )
 ).add_to(m)
 
-# Responsive legend (same as before)
 legend_html = """
 <style>
 .legend-container {
@@ -702,9 +692,6 @@ legend_html = """
 """
 m.get_root().html.add_child(folium.Element(legend_html))
 
-# FIX: Use a DYNAMIC key based on the selected month + returned_objects=[] 
-# This forces the frontend to completely REMOUNT the map when the month changes, 
-# solving the "first load" and "some months blank" issues.
 st_folium(m, use_container_width=True, height=400, key=f"dengue_map_{selected_month}", returned_objects=[])
 
 # =====================================================
@@ -759,7 +746,7 @@ with col_chart:
     )
 
 # =====================================================
-# HEATMAP – SIGNATURE CYBER PALETTE (Blue/Pink)
+# HEATMAP – SIGNATURE CYBER PALETTE
 # =====================================================
 
 st.markdown("""
@@ -782,7 +769,7 @@ if heatmap_type == "Predicted Cases":
     fig = px.imshow(
         pivot,
         text_auto=True,
-        color_continuous_scale=["#00F0FF", "#2DD4BF", "#A855F7", "#FF006E"],  # Cyber palette
+        color_continuous_scale=["#00F0FF", "#2DD4BF", "#A855F7", "#FF006E"],
         aspect="equal",
         labels=dict(x="Month", y="Barangay", color="Cases")
     )
@@ -799,7 +786,6 @@ else:
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
 
-# Text: white with dark outline for readability
 fig.update_traces(
     textfont=dict(color="white", size=12, family="Inter", weight="bold"),
     selector=dict(type="heatmap")
@@ -1063,12 +1049,11 @@ with col_preview:
     if not barangay_data.empty:
         total_cases_preview = int(barangay_data["Predicted_Cases"].sum())
         peak_row_preview = barangay_data.loc[barangay_data["Predicted_Cases"].idxmax()]
-        peak_month_preview = pd.to_datetime(peak_row_preview["YearMonth"]).strftime("%B %Y")  # full month + year
+        peak_month_preview = pd.to_datetime(peak_row_preview["YearMonth"]).strftime("%B %Y")
         peak_cases_preview = int(peak_row_preview["Predicted_Cases"])
         risk_order = {"Safe": 1, "Moderate": 2, "High": 3, "Extreme": 4}
         max_risk_preview = max(barangay_data["Risk_Level"], key=lambda x: risk_order.get(x, 0))
 
-        # FIX: Replaced truncating st.metric for Peak Month with a robust custom HTML card
         c1, c2, c3 = st.columns(3)
         with c1:
             st.metric("📊 Total Cases", f"{total_cases_preview:,}")
@@ -1236,8 +1221,8 @@ st.markdown("""
 
 st.markdown("""
 <div class="footer">
-    <i class="fas fa-satellite-dish"></i> DRIVE · Final Release v1.0 · 
-    <span class="mantra">"Data is the compass – but action is the voyage."</span> · 
+    <i class="fas fa-satellite-dish"></i> DRIVE · Final Release v1.0 ·
+    <span class="mantra">"Data is the compass – but action is the voyage."</span> ·
     <i class="fas fa-shield-halved"></i> © 2026
 </div>
 """, unsafe_allow_html=True)
