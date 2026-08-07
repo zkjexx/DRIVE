@@ -38,6 +38,12 @@ def add_seasonality(
 
     return df
 
+
+
+# =====================================================
+# 4-LEVEL RISK CLASSIFICATION - FIXED
+# =====================================================
+
 def classify_risk_4level(cases, mu, sigma):
     """
     Classify dengue risk into 4 levels based on historical mean (mu)
