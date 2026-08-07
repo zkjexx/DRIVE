@@ -587,7 +587,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # =====================================================
-# INTERACTIVE RISK MAP (FIXED: tooltip shows cases)
+# INTERACTIVE RISK MAP (FIX: Thinner polygons, fullscreen control, hover-only tooltips)
 # =====================================================
 
 st.markdown("""
@@ -604,6 +604,9 @@ m = folium.Map(
     tiles="cartodbpositron",
     scrollWheelZoom=False
 )
+
+# Add Fullscreen control for better zooming and decluttering
+m.add_child(folium.plugins.Fullscreen())
 
 # Force default month
 default_month = sorted(predictions["YearMonth"].unique())[0]
@@ -622,11 +625,18 @@ def case_color(cases):
     elif cases < 75: return "#A855F7"
     else: return "#FF006E"
 
+# FIX: Reduced polygon weight and opacity to prevent map overcrowding/clutter
 def style_function(feature):
     name = feature["properties"].get("name")
     row = map_data[map_data["Barangay"].str.lower() == str(name).lower()]
     color = case_color(row.iloc[0]["Predicted_Cases"]) if not row.empty else "#64748B"
-    return {"fillColor": color, "color": "#00F0FF", "weight": 1.5, "fillOpacity": 0.6, "dashArray": '2'}
+    return {
+        "fillColor": color, 
+        "color": "#A855F7",     # Changed to soft neon purple for better contrast
+        "weight": 1.0,          # Reduced from 1.5 to prevent visual crowding
+        "fillOpacity": 0.5,     # Reduced from 0.6 to see base map better
+        "dashArray": '2'
+    }
 
 # --- Add cases to GeoJSON properties for tooltip ---
 geojson_with_cases = barangay_geojson.copy()
@@ -638,6 +648,7 @@ for feature in geojson_with_cases['features']:
     else:
         feature['properties']['cases'] = None
 
+# FIX: Ensure tooltips are hover-only and do NOT permanently overlay text on the map
 folium.GeoJson(
     geojson_with_cases,
     style_function=style_function,
@@ -1087,10 +1098,26 @@ with col_preview:
         risk_order = {"Safe": 1, "Moderate": 2, "High": 3, "Extreme": 4}
         max_risk_preview = max(barangay_data["Risk_Level"], key=lambda x: risk_order.get(x, 0))
 
+        # FIX: Replaced truncating st.metric for Peak Month with a robust custom HTML card
         c1, c2, c3 = st.columns(3)
-        c1.metric("📊 Total Cases", f"{total_cases_preview:,}")
-        c2.metric("📈 Peak Month", f"{peak_month_preview} ({peak_cases_preview})")
-        c3.metric("⚠ Overall Risk", max_risk_preview)
+        with c1:
+            st.metric("📊 Total Cases", f"{total_cases_preview:,}")
+        with c2:
+            st.markdown(f"""
+            <div style="background: rgba(6, 10, 18, 0.5); border: 1px solid rgba(0, 240, 255, 0.08); border-radius: 16px; padding: 16px 12px; backdrop-filter: blur(8px); box-shadow: 0 8px 32px rgba(0,0,0,0.6); text-align: center;">
+                <div style="color: #94A3B8; font-weight: 400; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <i class="fas fa-chart-line" style="color:#2DD4BF;"></i> Peak Month
+                </div>
+                <div style="color: #00F0FF; font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.8rem; line-height: 1.2; word-break: break-word; white-space: normal;">
+                    {peak_month_preview}
+                </div>
+                <div style="color: #2DD4BF; font-size: 0.9rem; font-weight: 600;">
+                    {peak_cases_preview} cases
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        with c3:
+            st.metric("⚠ Overall Risk", max_risk_preview)
 
         st.markdown("#### Monthly Forecast")
         preview_df = barangay_data[["YearMonth", "Predicted_Cases", "Risk_Level"]].copy()
