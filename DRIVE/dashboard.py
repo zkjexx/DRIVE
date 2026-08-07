@@ -524,11 +524,11 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- Select Barangay ---
+# --- Select Barangay (UNIQUE KEY) ---
 barangay = st.selectbox(
     "Select Barangay for Simulation",
     predictions["Barangay"].unique(),
-    key="sim_barangay"
+    key="sim_barangay_select"   # <-- Changed to unique key
 )
 
 # --- Get baseline data ---
@@ -595,38 +595,30 @@ def simulate_cases(base_cases, rainfall_pct, humidity_pct, temp_pct, wind_pct, s
     """
     Simulates dengue cases using heuristic multipliers based on environmental factors.
     """
-    # Start at 1.0
     multiplier = 1.0
     
-    # Rainfall effect
     if rainfall_pct > 0:
         rainfall_effect = 1 + (rainfall_pct / 100) * 1.2
     else:
         rainfall_effect = 1 + (rainfall_pct / 100) * 0.8
     multiplier *= rainfall_effect
     
-    # Humidity effect
     humidity_effect = 1 + (humidity_pct / 100) * 0.7
     multiplier *= humidity_effect
     
-    # Rainfall-Humidity Synergy (when both are high)
     if rainfall_pct > 20 and humidity_pct > 20:
         synergy = 1 + ((rainfall_pct + humidity_pct) / 200) * 0.3
         multiplier *= synergy
     
-    # Temperature effect
     temp_effect = 1 + (temp_pct / 100) * 0.5
     multiplier *= temp_effect
     
-    # Wind effect (dampener)
     wind_effect = 1 - (wind_pct / 100) * 0.3
     wind_effect = max(0.7, wind_effect)
     multiplier *= wind_effect
     
-    # Seasonality
     multiplier *= season_factor
     
-    # Apply to base cases
     simulated = base_cases * multiplier
     return max(0, round(simulated)), multiplier
 
