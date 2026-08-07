@@ -38,48 +38,26 @@ def add_seasonality(
 
     return df
 
-
-
-# =====================================================
-# 4-LEVEL RISK CLASSIFICATION
-# =====================================================
-
-def classify_risk_4level(
-        upper_bound,
-        mean,
-        std
-):
+def classify_risk_4level(cases, mu, sigma):
     """
-    Risk categories based on the upper bound of the
-    95% prediction interval.
-
-    Safe:
-        Upper95 < mean
-
-    Moderate:
-        mean ≤ Upper95 < mean + 0.5σ
-
-    High:
-        mean + 0.5σ ≤ Upper95 < mean + 1σ
-
-    Extreme:
-        Upper95 ≥ mean + 1σ
+    Classify dengue risk into 4 levels based on historical mean (mu)
+    and standard deviation (sigma).
+    
+    Parameters:
+        cases (float or int): Predicted cases (or upper bound)
+        mu (float): Historical mean cases
+        sigma (float): Historical standard deviation
+    
+    Returns:
+        str: 'Safe', 'Moderate', 'High', or 'Extreme'
     """
-
-    if upper_bound < mean:
-
+    if cases < mu:
         return "Safe"
-
-    elif upper_bound < mean + (0.5 * std):
-
+    elif cases < mu + 0.5 * sigma:
         return "Moderate"
-
-    elif upper_bound < mean + std:
-
+    elif cases < mu + sigma:
         return "High"
-
     else:
-
         return "Extreme"
 
 
