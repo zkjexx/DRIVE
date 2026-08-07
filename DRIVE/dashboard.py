@@ -45,7 +45,7 @@ st.set_page_config(
 )
 
 # =====================================================
-# CSS – DEEP CYBER-GLASS (The Signature Theme)
+# CSS – DEEP CYBER-GLASS (Polished)
 # =====================================================
 
 st.markdown("""
@@ -54,7 +54,7 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=JetBrains+Mono:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
 
-/* ----- RESET & BASE (Deep Space / Cyber) ----- */
+/* ----- RESET & BASE ----- */
 html, body, .stApp {
     background: #060A12 !important;
     margin: 0 !important;
@@ -65,134 +65,29 @@ html, body, .stApp {
     background: radial-gradient(ellipse at 20% 50%, #0B1A2A 0%, #060A12 70%) !important;
 }
 
-/* ---- FLOATING PARTICLES (CSS Backup + Canvas injected later) ---- */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, #00F0FF, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 40px 70px, #A855F7, rgba(0,0,0,0)),
-        radial-gradient(3px 3px at 120px 200px, #2DD4BF, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 90px 40px, #00F0FF, rgba(0,0,0,0));
-    background-size: 200px 200px;
-    background-repeat: repeat;
-    opacity: 0.3;
-    pointer-events: none;
-    z-index: 0;
-    animation: driftParticles 30s linear infinite;
-}
-@keyframes driftParticles {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-40px, -20px) scale(1.1); }
-}
-
-/* ---- PULSING SONAR (Hero Background) ---- */
-section.main > div {
-    position: relative;
-    z-index: 2;
-}
-section.main::before {
-    content: '';
-    position: fixed;
-    top: 25%;
-    left: 50%;
-    width: 80vmin;
-    height: 80vmin;
-    transform: translate(-50%, -50%);
-    border: 1px solid rgba(0, 240, 255, 0.08);
-    border-radius: 50%;
-    box-shadow: 0 0 60px rgba(0, 240, 255, 0.05), inset 0 0 60px rgba(0, 240, 255, 0.02);
-    animation: sonarPulse 4s ease-out infinite;
-    pointer-events: none;
-    z-index: 0;
-}
-section.main::after {
-    content: '';
-    position: fixed;
-    top: 25%;
-    left: 50%;
-    width: 60vmin;
-    height: 60vmin;
-    transform: translate(-50%, -50%);
-    border: 1px solid rgba(168, 85, 247, 0.05);
-    border-radius: 50%;
-    animation: sonarPulse 4s ease-out 2s infinite;
-    pointer-events: none;
-    z-index: 0;
-}
-@keyframes sonarPulse {
-    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
-}
-
-/* ----- LAYOUT & GLASS (Holographic Panels) ----- */
 section.main > div {
     max-width: 1400px !important;
     margin: 0 auto !important;
     padding: 0 24px !important;
 }
 
-.glass-hero {
-    background: rgba(6, 10, 18, 0.65) !important;
-    backdrop-filter: blur(24px) !important;
-    -webkit-backdrop-filter: blur(24px) !important;
-    border: 1px solid rgba(0, 240, 255, 0.15) !important;
-    border-radius: 40px !important;
-    padding: 40px 20px !important;
-    margin: 20px 0 40px !important;
-    text-align: center !important;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 40px rgba(0, 240, 255, 0.05), inset 0 0 40px rgba(0, 240, 255, 0.02);
-    transition: all 0.3s ease;
-}
-.glass-hero:hover {
-    border-color: rgba(168, 85, 247, 0.3);
-    box-shadow: 0 0 60px rgba(168, 85, 247, 0.1);
-}
-/* Scanline overlay */
-.glass-hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: repeating-linear-gradient(0deg, 
-        transparent 0px, 
-        transparent 4px, 
-        rgba(0, 240, 255, 0.02) 4px, 
-        rgba(0, 240, 255, 0.02) 5px);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.glass-map, .card {
-    background: rgba(6, 10, 18, 0.6) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border: 1px solid rgba(0, 240, 255, 0.08) !important;
-    border-radius: 28px !important;
-    padding: 20px !important;
-    margin: 20px 0 !important;
-    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-}
-.glass-map:hover, .card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(0, 240, 255, 0.3);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.05);
-}
-
-/* ----- TYPOGRAPHY (Cyber / Holographic) ----- */
+/* ----- TYPOGRAPHY (Brighter) ----- */
 h1, h2, h3, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
     font-family: 'JetBrains Mono', 'Inter', monospace !important;
     color: #E2F0FA !important;
     font-weight: 400 !important;
     letter-spacing: 1px !important;
 }
-p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
+p, li, .stMarkdown, .stSelectbox, .stSlider {
     font-family: 'Inter', 'Segoe UI', sans-serif !important;
     line-height: 1.7;
-    color: #A0B8CC;
+    color: #E2F0FA !important;  /* bright */
+}
+.section-desc {
+    font-size: 0.9rem !important;
+    color: #94A3B8 !important;  /* subtle but readable */
+    margin-top: 0 !important;
+    margin-bottom: 1.5rem !important;
 }
 
 .main-title {
@@ -207,8 +102,6 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     margin: 0 !important;
     padding: 0 !important;
     line-height: 1.1 !important;
-    position: relative;
-    z-index: 2;
 }
 .subtitle {
     font-family: 'JetBrains Mono', monospace !important;
@@ -219,9 +112,6 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     letter-spacing: 6px !important;
     text-transform: uppercase;
     margin-top: -0.2rem !important;
-    position: relative;
-    z-index: 2;
-    text-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
 }
 .section-title {
     font-size: 1.3rem !important;
@@ -238,14 +128,33 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     color: #A855F7;
     font-size: 1.3rem;
 }
-.section-desc {
-    font-size: 0.9rem !important;
-    color: #6A8CA0 !important;
-    margin-top: 0 !important;
-    margin-bottom: 1.5rem !important;
+
+/* ----- GLASS PANELS ----- */
+.glass-hero {
+    background: rgba(6, 10, 18, 0.65) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid rgba(0, 240, 255, 0.15) !important;
+    border-radius: 40px !important;
+    padding: 40px 20px !important;
+    margin: 20px 0 40px !important;
+    text-align: center !important;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.05), inset 0 0 40px rgba(0, 240, 255, 0.02);
+}
+.glass-map, .card {
+    background: rgba(6, 10, 18, 0.6) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(0, 240, 255, 0.08) !important;
+    border-radius: 28px !important;
+    padding: 20px !important;
+    margin: 20px 0 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
-/* ----- SIDEBAR (Glass Panel) ----- */
+/* ----- SIDEBAR ----- */
 [data-testid="stSidebar"] {
     background: rgba(6, 10, 18, 0.9) !important;
     backdrop-filter: blur(24px) !important;
@@ -254,15 +163,11 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     max-width: 240px;
 }
 [data-testid="stSidebar"] .stMarkdown {
-    color: #A0B8CC !important;
+    color: #E2F0FA !important;
     font-size: 0.9rem;
 }
-[data-testid="stSidebar"] hr {
-    opacity: 0.2;
-    border-color: #00F0FF;
-}
 
-/* ----- METRIC PILLS (Glowing Badges) ----- */
+/* ----- METRIC PILLS ----- */
 .metric-pill {
     display: inline-block;
     background: rgba(0, 240, 255, 0.04);
@@ -272,11 +177,10 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     margin: 4px 10px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
-    color: #A0B8CC;
+    color: #E2F0FA;
     white-space: nowrap;
     transition: all 0.3s ease;
     backdrop-filter: blur(4px);
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.02);
 }
 .metric-pill:hover {
     background: rgba(0, 240, 255, 0.08);
@@ -285,7 +189,7 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     transform: scale(1.03);
 }
 .metric-pill strong {
-    color: #E2F0FA;
+    color: #F8FAFC;
     font-weight: 700;
 }
 .metric-pill i {
@@ -293,37 +197,7 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     margin-right: 6px;
 }
 
-/* Status Badge (Pulse) */
-.status-badge {
-    display: inline-block;
-    background: rgba(0, 240, 255, 0.08);
-    border: 1px solid #00F0FF;
-    border-radius: 999px;
-    padding: 4px 18px 4px 14px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #00F0FF;
-    letter-spacing: 2px;
-    backdrop-filter: blur(4px);
-    text-transform: uppercase;
-    font-family: 'JetBrains Mono', monospace;
-}
-.status-badge .dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: #00F0FF;
-    border-radius: 50%;
-    margin-right: 8px;
-    box-shadow: 0 0 15px #00F0FF;
-    animation: pulseDeep 1.2s ease-in-out infinite;
-}
-@keyframes pulseDeep {
-    0%, 100% { opacity: 1; box-shadow: 0 0 15px #00F0FF; }
-    50% { opacity: 0.2; box-shadow: 0 0 5px #00F0FF; }
-}
-
-/* ----- BUTTONS (Neon) ----- */
+/* ----- BUTTONS ----- */
 .stButton > button {
     background: linear-gradient(135deg, #00F0FF, #A855F7) !important;
     border: none !important;
@@ -340,15 +214,11 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     transform: translateY(-4px) scale(1.02) !important;
     box-shadow: 0 0 50px rgba(0, 240, 255, 0.4) !important;
 }
-.stButton > button:active {
-    transform: translateY(2px) scale(0.98) !important;
-}
 
-/* ----- DATAFRAME (Neon Grid) ----- */
+/* ----- DATAFRAME ----- */
 .stDataFrame {
     background: rgba(6, 10, 18, 0.8) !important;
     border-radius: 18px !important;
-    overflow: hidden !important;
     border: 1px solid rgba(0, 240, 255, 0.05) !important;
 }
 .stDataFrame thead tr th {
@@ -356,14 +226,11 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     color: #00F0FF !important;
     font-weight: 600 !important;
 }
-.stDataFrame tbody tr:hover {
-    background: rgba(168, 85, 247, 0.05) !important;
-}
 .stDataFrame td {
-    color: #A0B8CC !important;
+    color: #E2F0FA !important;
 }
 
-/* ----- SLIDERS (Cyan Glow) ----- */
+/* ----- SLIDERS ----- */
 .stSlider > div > div > div > input {
     background: #A855F7 !important;
     height: 4px !important;
@@ -375,12 +242,11 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     border-radius: 50% !important;
     border: 2px solid #060A12 !important;
     box-shadow: 0 0 25px #00F0FF;
-    transition: 0.1s ease;
 }
 
-/* ----- SELECTBOX (Glass Neon) ----- */
+/* ----- SELECTBOX ----- */
 .stSelectbox label {
-    color: #6A8CA0 !important;
+    color: #94A3B8 !important;
     font-weight: 500 !important;
 }
 .stSelectbox > div > div {
@@ -388,21 +254,16 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     border: 1px solid rgba(0, 240, 255, 0.15) !important;
     border-radius: 14px !important;
     color: #E2F0FA !important;
-    transition: all 0.3s ease;
 }
 .stSelectbox > div > div:hover {
     border-color: #00F0FF !important;
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
 }
 .stSelectbox > div > div > div > div {
     background: #060A12 !important;
     color: #E2F0FA !important;
 }
-.stSelectbox > div > div > div > div > div:hover {
-    background: rgba(0, 240, 255, 0.1) !important;
-}
 
-/* ----- METRIC CARDS (Override Streamlit) ----- */
+/* ----- METRIC CARDS ----- */
 .stMetric {
     background: rgba(6, 10, 18, 0.5) !important;
     border: 1px solid rgba(0, 240, 255, 0.1) !important;
@@ -411,7 +272,7 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     backdrop-filter: blur(8px) !important;
 }
 .stMetric label {
-    color: #6A8CA0 !important;
+    color: #94A3B8 !important;
     font-weight: 400 !important;
 }
 .stMetric .stMetricValue {
@@ -423,42 +284,24 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     color: #2DD4BF !important;
 }
 
-/* ----- SCROLLBAR (Cyan/Purple) ----- */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: #060A12;
-}
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #00F0FF, #A855F7);
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #A855F7, #2DD4BF);
-}
+/* ----- SCROLLBAR ----- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #060A12; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #00F0FF, #A855F7); border-radius: 10px; }
 
-/* ----- FOOTER (Clean) ----- */
+/* ----- FOOTER ----- */
 .footer {
     text-align: center;
     padding: 30px 0 20px;
     border-top: 1px solid rgba(0, 240, 255, 0.05);
     margin-top: 40px;
-    color: #3A5A6A;
+    color: #64748B;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
     letter-spacing: 2px;
 }
-.footer i {
-    color: #2DD4BF;
-    margin: 0 6px;
-}
-.footer .mantra {
-    color: #A855F7;
-    font-weight: 300;
-    text-shadow: 0 0 20px rgba(168, 85, 247, 0.1);
-}
+.footer i { color: #2DD4BF; margin: 0 6px; }
+.footer .mantra { color: #A855F7; font-weight: 300; text-shadow: 0 0 20px rgba(168, 85, 247, 0.1); }
 
 /* ----- RESPONSIVE ----- */
 @media (max-width: 768px) {
@@ -469,7 +312,6 @@ p, li, .stMarkdown, .section-desc, .stSelectbox, .stSlider {
     .metric-pill { font-size: 0.65rem !important; padding: 4px 12px !important; }
     .stFoliumMap { height: 350px !important; }
     [data-testid="stSidebar"] { min-width: 0px !important; max-width: 100% !important; }
-    section.main::before, section.main::after { display: none; }
 }
 @media (max-width: 480px) {
     .main-title { font-size: 2.0rem !important; }
@@ -496,12 +338,12 @@ def load_geojson():
 predictions = load_predictions()
 barangay_geojson = load_geojson()
 
-# Signature Risk Palette (Cyber/Neon)
+# Signature Risk Palette
 risk_colors = {
-    "Safe": "#00F0FF",      # Cyan
-    "Moderate": "#2DD4BF",  # Teal
-    "High": "#A855F7",      # Purple
-    "Extreme": "#FF006E"    # Hot Pink
+    "Safe": "#00F0FF",
+    "Moderate": "#2DD4BF",
+    "High": "#A855F7",
+    "Extreme": "#FF006E"
 }
 risk_values = {
     "Safe": 1,
@@ -522,7 +364,7 @@ def generate_pdf_report(barangay, df, include_summary=True, include_ci=True,
 
     total_cases = int(barangay_data["Predicted_Cases"].sum())
     peak_row = barangay_data.loc[barangay_data["Predicted_Cases"].idxmax()]
-    peak_month = peak_row["YearMonth"]
+    peak_month = pd.to_datetime(peak_row["YearMonth"]).strftime("%B %Y")  # FIX: Full month name
     peak_cases = int(peak_row["Predicted_Cases"])
 
     risk_order = {"Safe": 1, "Moderate": 2, "High": 3, "Extreme": 4}
@@ -692,7 +534,7 @@ with st.sidebar:
     st.caption("© 2026 DRIVE · All rights reserved.")
 
 # =====================================================
-# HERO – SIGNATURE EDITION
+# HERO
 # =====================================================
 
 total_cases = int(predictions["Predicted_Cases"].sum())
@@ -707,7 +549,7 @@ st.markdown(f"""
         <div style="position:absolute; bottom:-20px; right:10px; font-size:2.8rem; opacity:0.2; filter:drop-shadow(0 0 30px #A855F7);">🌊</div>
         <div class="main-title">DRIVE</div>
         <div class="subtitle">Dengue Risk Intelligence · Visualization Engine</div>
-        <div style="font-family:'JetBrains Mono',monospace; font-weight:300; color:#6A8CA0; margin:8px 0 16px; display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap; z-index:2; position:relative; font-size:0.8rem;">
+        <div style="font-family:'JetBrains Mono',monospace; font-weight:300; color:#94A3B8; margin:8px 0 16px; display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap; z-index:2; position:relative; font-size:0.8rem;">
             <span><i class="fas fa-microchip" style="color:#00F0FF;"></i> AI-Powered Early Warning</span>
             <span style="color:#3A5A6A;">|</span>
             <span>Quezon City District II</span>
@@ -729,7 +571,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # =====================================================
-# INTERACTIVE RISK MAP
+# INTERACTIVE RISK MAP (FIXED: default month + key)
 # =====================================================
 
 st.markdown("""
@@ -747,19 +589,22 @@ m = folium.Map(
     scrollWheelZoom=False
 )
 
+# Force default month (first available) to avoid "undefined"
+default_month = sorted(predictions["YearMonth"].unique())[0]
 selected_month = st.selectbox(
     "Select Forecast Month",
     sorted(predictions["YearMonth"].unique()),
+    index=0,
     key="map_month"
 )
 
 map_data = predictions[predictions["YearMonth"] == selected_month]
 
 def case_color(cases):
-    if cases < 50: return "#00F0FF"      # Cyan
-    elif cases < 60: return "#2DD4BF"    # Teal
-    elif cases < 75: return "#A855F7"    # Purple
-    else: return "#FF006E"               # Hot Pink
+    if cases < 50: return "#00F0FF"
+    elif cases < 60: return "#2DD4BF"
+    elif cases < 75: return "#A855F7"
+    else: return "#FF006E"
 
 def style_function(feature):
     name = feature["properties"].get("name")
@@ -773,30 +618,83 @@ folium.GeoJson(
     tooltip=folium.GeoJsonTooltip(fields=["name"], aliases=["Barangay:"])
 ).add_to(m)
 
+# RESPONSIVE LEGEND (fix #2)
 legend_html = """
-<div style="
-position: fixed; top: 20px; right: 20px;
-background: rgba(6, 10, 18, 0.85);
-backdrop-filter: blur(16px);
-border: 1px solid rgba(0, 240, 255, 0.15);
-border-radius: 16px;
-padding: 14px 18px;
-font-family: 'JetBrains Mono', monospace;
-color: #E2F0FA;
-font-size: 12px;
-box-shadow: 0 8px 32px rgba(0,0,0,0.8);
-z-index: 9999;
-">
-<b style="display:block; margin-bottom:8px; color:#00F0FF;">CASE INTENSITY</b>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#00F0FF; border-radius:4px; box-shadow: 0 0 10px #00F0FF;"></span> Low (&lt;50)</div>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#2DD4BF; border-radius:4px; box-shadow: 0 0 10px #2DD4BF;"></span> Moderate (50-60)</div>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#A855F7; border-radius:4px; box-shadow: 0 0 10px #A855F7;"></span> High (60-75)</div>
-<div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:14px; height:14px; background:#FF006E; border-radius:4px; box-shadow: 0 0 10px #FF006E;"></span> Extreme (>75)</div>
+<style>
+.legend-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(6, 10, 18, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    border-radius: 16px;
+    padding: 14px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    color: #E2F0FA;
+    font-size: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+    z-index: 9999;
+    max-width: 200px;
+}
+.legend-container b {
+    display: block;
+    margin-bottom: 8px;
+    color: #00F0FF;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+}
+.legend-color {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+@media (max-width: 768px) {
+    .legend-container {
+        top: auto;
+        bottom: 20px;
+        right: 10px;
+        padding: 10px 12px;
+        font-size: 10px;
+        max-width: 150px;
+        border-radius: 12px;
+    }
+    .legend-container b {
+        font-size: 11px;
+        margin-bottom: 4px;
+    }
+    .legend-color {
+        width: 10px;
+        height: 10px;
+    }
+}
+</style>
+<div class="legend-container">
+    <b>CASE INTENSITY</b>
+    <div class="legend-item">
+        <span class="legend-color" style="background:#00F0FF; box-shadow: 0 0 10px #00F0FF;"></span> Low (&lt;50)
+    </div>
+    <div class="legend-item">
+        <span class="legend-color" style="background:#2DD4BF; box-shadow: 0 0 10px #2DD4BF;"></span> Moderate (50-60)
+    </div>
+    <div class="legend-item">
+        <span class="legend-color" style="background:#A855F7; box-shadow: 0 0 10px #A855F7;"></span> High (60-75)
+    </div>
+    <div class="legend-item">
+        <span class="legend-color" style="background:#FF006E; box-shadow: 0 0 10px #FF006E;"></span> Extreme (>75)
+    </div>
 </div>
 """
 m.get_root().html.add_child(folium.Element(legend_html))
 
-st_folium(m, use_container_width=True, height=400)
+# ADD KEY to st_folium to force re-render
+st_folium(m, use_container_width=True, height=400, key="dengue_map")
 
 # =====================================================
 # FORECAST TABLE & TREND CHART
@@ -833,7 +731,7 @@ with col_chart:
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="#A0B8CC", family="Inter"),
+        font=dict(color="#E2F0FA", family="Inter"),
         margin=dict(l=20, r=20, t=20, b=20),
         height=400,
         xaxis=dict(gridcolor="rgba(0,240,255,0.05)", title=""),
@@ -850,7 +748,7 @@ with col_chart:
     )
 
 # =====================================================
-# HEATMAP – SCROLLABLE (using st.components.v1.html)
+# HEATMAP – UPDATED COLORS (Gold → Red), White Text
 # =====================================================
 
 st.markdown("""
@@ -873,7 +771,7 @@ if heatmap_type == "Predicted Cases":
     fig = px.imshow(
         pivot,
         text_auto=True,
-        color_continuous_scale=["#00F0FF", "#2DD4BF", "#A855F7", "#FF006E"],
+        color_continuous_scale=["#FFD700", "#FFA500", "#FF4500", "#8B0000"],  # warm: gold → red
         aspect="equal",
         labels=dict(x="Month", y="Barangay", color="Cases")
     )
@@ -884,23 +782,27 @@ else:
         pivot,
         text_auto=True,
         zmin=1, zmax=4,
-        color_continuous_scale=["#00F0FF", "#2DD4BF", "#A855F7", "#FF006E"],
+        color_continuous_scale=["#FFD700", "#FFA500", "#FF4500", "#8B0000"],
         aspect="equal",
         labels=dict(x="Month", y="Barangay", color="Risk")
     )
     fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
 
-# Layout: fixed width and margins
+# Make text white and larger
+fig.update_traces(
+    textfont=dict(color="white", size=12, family="Inter"),
+    selector=dict(type="heatmap")
+)
+
 fig.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#A0B8CC", size=11),
+    font=dict(color="#F8FAFC", size=12),  # bright white
     margin=dict(l=130, r=30, t=30, b=60),
     width=1000,
     autosize=False
 )
 
-# Generate HTML with scroll zoom disabled
 html_str = fig.to_html(
     include_plotlyjs='cdn',
     config={
@@ -914,15 +816,8 @@ html_str = fig.to_html(
     default_width='1000px'
 )
 
-# Wrap in scrollable div
 scrollable_html = f"""
-<div style="
-    overflow-x: auto;
-    width: 100%;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
-    cursor: grab;
-">
+<div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; touch-action: pan-x; cursor: grab;">
     {html_str}
 </div>
 """
@@ -930,7 +825,7 @@ scrollable_html = f"""
 st.components.v1.html(scrollable_html, height=520)
 
 # =====================================================
-# WHAT‑IF SIMULATION – Refined & Polished
+# WHAT‑IF SIMULATION
 # =====================================================
 
 st.markdown("""
@@ -943,17 +838,14 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- Select Barangay (UNIQUE KEY) ---
 barangay = st.selectbox(
     "Select Barangay for Simulation",
     predictions["Barangay"].unique(),
     key="sim_barangay_select"
 )
 
-# --- Get baseline data ---
 base = predictions[predictions["Barangay"] == barangay].iloc[0]
 
-# --- Display Baseline ---
 col_base1, col_base2, col_base3 = st.columns(3)
 with col_base1:
     st.metric("📊 Baseline Cases", f"{base['Predicted_Cases']:.0f}")
@@ -963,85 +855,44 @@ with col_base3:
     st.metric("📅 Peak Month", base['YearMonth'])
 
 st.markdown("---")
-
-# --- Environmental Sliders ---
 st.markdown("#### 🌡️ Adjust Environmental Factors")
 
 col_s1, col_s2, col_s3 = st.columns(3)
 
 with col_s1:
-    rainfall = st.slider(
-        "🌧️ Rainfall Change (%)",
-        -50, 100, 0,
-        key="rainfall_sim",
-        help="Rainfall increases mosquito breeding sites"
-    )
-    
-    humidity = st.slider(
-        "💧 Humidity Change (%)",
-        -50, 100, 0,
-        key="humidity_sim",
-        help="Higher humidity increases mosquito survival"
-    )
+    rainfall = st.slider("🌧️ Rainfall Change (%)", -50, 100, 0, key="rainfall_sim")
+    humidity = st.slider("💧 Humidity Change (%)", -50, 100, 0, key="humidity_sim")
 
 with col_s2:
-    temperature = st.slider(
-        "🌡️ Temperature Change (%)",
-        -20, 50, 0,
-        key="temp_sim",
-        help="Warmer temperatures accelerate virus development"
-    )
-    
-    wind = st.slider(
-        "🌬️ Wind Speed Change (%)",
-        -50, 50, 0,
-        key="wind_sim",
-        help="Stronger winds disperse mosquitoes"
-    )
+    temperature = st.slider("🌡️ Temperature Change (%)", -20, 50, 0, key="temp_sim")
+    wind = st.slider("🌬️ Wind Speed Change (%)", -50, 50, 0, key="wind_sim")
 
 with col_s3:
-    season = st.slider(
-        "📅 Seasonality Factor",
-        0.5, 2.0, 1.0, 0.1,
-        key="season_sim",
-        help="1.0 = normal seasonal pattern"
-    )
+    season = st.slider("📅 Seasonality Factor", 0.5, 2.0, 1.0, 0.1, key="season_sim")
 
 st.caption("Adjust sliders to see how each factor changes the prediction.")
 
-# --- Simulation Function ---
 def simulate_cases(base_cases, rainfall_pct, humidity_pct, temp_pct, wind_pct, season_factor):
-    """
-    Simulates dengue cases using heuristic multipliers based on environmental factors.
-    """
     multiplier = 1.0
-    
     if rainfall_pct > 0:
         rainfall_effect = 1 + (rainfall_pct / 100) * 1.2
     else:
         rainfall_effect = 1 + (rainfall_pct / 100) * 0.8
     multiplier *= rainfall_effect
-    
     humidity_effect = 1 + (humidity_pct / 100) * 0.7
     multiplier *= humidity_effect
-    
     if rainfall_pct > 20 and humidity_pct > 20:
         synergy = 1 + ((rainfall_pct + humidity_pct) / 200) * 0.3
         multiplier *= synergy
-    
     temp_effect = 1 + (temp_pct / 100) * 0.5
     multiplier *= temp_effect
-    
     wind_effect = 1 - (wind_pct / 100) * 0.3
     wind_effect = max(0.7, wind_effect)
     multiplier *= wind_effect
-    
     multiplier *= season_factor
-    
     simulated = base_cases * multiplier
     return max(0, round(simulated)), multiplier
 
-# --- Run Simulation ---
 sim_cases, total_multiplier = simulate_cases(
     base["Predicted_Cases"],
     rainfall,
@@ -1057,56 +908,30 @@ sim_risk = classify_risk_4level(
     base["Historical_SD"],
 )
 
-# --- Results ---
 st.markdown("---")
 st.markdown("#### 📊 Simulation Results")
 
 col_r1, col_r2, col_r3, col_r4 = st.columns(4)
-
 with col_r1:
-    st.metric(
-        "🦟 Simulated Cases",
-        f"{sim_cases:.0f}",
-        delta=f"{sim_cases - base['Predicted_Cases']:+.0f}",
-        delta_color="normal"
-    )
-
+    st.metric("🦟 Simulated Cases", f"{sim_cases:.0f}", delta=f"{sim_cases - base['Predicted_Cases']:+.0f}", delta_color="normal")
 with col_r2:
-    st.metric(
-        "⚠️ Risk Level",
-        sim_risk
-    )
-
+    st.metric("⚠️ Risk Level", sim_risk)
 with col_r3:
-    st.metric(
-        "📈 Change (%)",
-        f"{((sim_cases - base['Predicted_Cases']) / base['Predicted_Cases'] * 100):+.1f}%"
-    )
-
+    st.metric("📈 Change (%)", f"{((sim_cases - base['Predicted_Cases']) / base['Predicted_Cases'] * 100):+.1f}%")
 with col_r4:
-    st.metric(
-        "🔢 Multiplier",
-        f"{total_multiplier:.2f}x"
-    )
+    st.metric("🔢 Multiplier", f"{total_multiplier:.2f}x")
 
-# --- Breakdown ---
 st.markdown("#### 🔍 Factor Breakdown")
 
 col_b1, col_b2 = st.columns(2)
-
 with col_b1:
     st.markdown("**📈 Factors That Increased Risk**")
     factors_up = []
-    if rainfall > 0:
-        factors_up.append(f"🌧️ Rainfall +{rainfall}%")
-    if humidity > 0:
-        factors_up.append(f"💧 Humidity +{humidity}%")
-    if temperature > 0:
-        factors_up.append(f"🌡️ Temperature +{temperature}%")
-    if season > 1.0:
-        factors_up.append(f"📅 Seasonality +{int((season-1)*100)}%")
-    if rainfall > 20 and humidity > 20:
-        factors_up.append(f"🤝 Synergy Bonus Applied")
+    if rainfall > 0: factors_up.append(f"🌧️ Rainfall +{rainfall}%")
+    if humidity > 0: factors_up.append(f"💧 Humidity +{humidity}%")
+    if temperature > 0: factors_up.append(f"🌡️ Temperature +{temperature}%")
+    if season > 1.0: factors_up.append(f"📅 Seasonality +{int((season-1)*100)}%")
+    if rainfall > 20 and humidity > 20: factors_up.append(f"🤝 Synergy Bonus Applied")
     if factors_up:
         for f in factors_up:
             st.success(f"✓ {f}")
@@ -1116,27 +941,19 @@ with col_b1:
 with col_b2:
     st.markdown("**📉 Factors That Decreased Risk**")
     factors_down = []
-    if rainfall < 0:
-        factors_down.append(f"🌧️ Rainfall {rainfall}%")
-    if humidity < 0:
-        factors_down.append(f"💧 Humidity {humidity}%")
-    if temperature < 0:
-        factors_down.append(f"🌡️ Temperature {temperature}%")
-    if wind > 0:
-        factors_down.append(f"🌬️ Wind +{wind}% (dampener)")
-    if wind < 0:
-        factors_down.append(f"🌬️ Wind {wind}% (less dampening)")
-    if season < 1.0:
-        factors_down.append(f"📅 Seasonality -{int((1-season)*100)}%")
+    if rainfall < 0: factors_down.append(f"🌧️ Rainfall {rainfall}%")
+    if humidity < 0: factors_down.append(f"💧 Humidity {humidity}%")
+    if temperature < 0: factors_down.append(f"🌡️ Temperature {temperature}%")
+    if wind > 0: factors_down.append(f"🌬️ Wind +{wind}% (dampener)")
+    if wind < 0: factors_down.append(f"🌬️ Wind {wind}% (less dampening)")
+    if season < 1.0: factors_down.append(f"📅 Seasonality -{int((1-season)*100)}%")
     if factors_down:
         for f in factors_down:
             st.warning(f"⬇ {f}")
     else:
         st.info("No decreases applied")
 
-# --- Comparison Chart ---
 st.markdown("#### 📈 Impact Across All Months")
-
 barangay_data = predictions[predictions["Barangay"] == barangay].sort_values("YearMonth")
 simulated_months = barangay_data.copy()
 simulated_months["Simulated_Cases"] = simulated_months["Predicted_Cases"] * total_multiplier
@@ -1148,18 +965,9 @@ fig_sim = px.line(
     y=["Predicted_Cases", "Simulated_Cases"],
     labels={"value": "Cases", "YearMonth": "Month", "variable": "Scenario"},
     title=f"Baseline vs. Simulated – {barangay}",
-    color_discrete_map={
-        "Predicted_Cases": "#3B82F6",
-        "Simulated_Cases": "#F59E0B"
-    }
+    color_discrete_map={"Predicted_Cases": "#3B82F6", "Simulated_Cases": "#F59E0B"}
 )
-
-fig_sim.update_traces(
-    mode='lines+markers',
-    line=dict(width=2.5),
-    marker=dict(size=8)
-)
-
+fig_sim.update_traces(mode='lines+markers', line=dict(width=2.5), marker=dict(size=8))
 fig_sim.update_layout(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
@@ -1168,24 +976,15 @@ fig_sim.update_layout(
     height=350,
     xaxis=dict(gridcolor="rgba(255,255,255,0.05)"),
     yaxis=dict(gridcolor="rgba(255,255,255,0.05)"),
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="center",
-        x=0.5
-    )
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="center", x=0.5)
 )
-
 st.plotly_chart(fig_sim, use_container_width=True)
 
-# --- Scientific Explanation Expander ---
 with st.expander("📐 How the Simulation Works"):
     st.markdown("""
     **This simulation applies heuristic multipliers to the baseline Random Forest predictions.**
     
     ### Equations
-    
     **Rainfall Effect**  
     $E_{rain} = 1 + \\frac{R}{100} \\times 1.2$ (if R > 0)  
     $E_{rain} = 1 + \\frac{R}{100} \\times 0.8$ (if R ≤ 0)
@@ -1212,7 +1011,7 @@ with st.expander("📐 How the Simulation Works"):
     $C_{sim} = \\max(0, \\text{round}(C_{base} \\times M_{total}))$
     
     ### Limitations
-    The simulation is heuristic and intended for scenario planning rather than precise prediction. The coefficients are based on estimated relationships between environmental factors and dengue transmission. Future work could calibrate these parameters using observational data.
+    The simulation is heuristic and intended for scenario planning rather than precise prediction.
     """)
 
 # =====================================================
@@ -1253,7 +1052,7 @@ with col_preview:
     if not barangay_data.empty:
         total_cases_preview = int(barangay_data["Predicted_Cases"].sum())
         peak_row_preview = barangay_data.loc[barangay_data["Predicted_Cases"].idxmax()]
-        peak_month_preview = peak_row_preview["YearMonth"]
+        peak_month_preview = pd.to_datetime(peak_row_preview["YearMonth"]).strftime("%B %Y")  # FIX: full month
         peak_cases_preview = int(peak_row_preview["Predicted_Cases"])
         risk_order = {"Safe": 1, "Moderate": 2, "High": 3, "Extreme": 4}
         max_risk_preview = max(barangay_data["Risk_Level"], key=lambda x: risk_order.get(x, 0))
@@ -1331,8 +1130,9 @@ if generate_btn:
         st.error("Failed to generate report. Please try again.")
 
 # =====================================================
-# INJECT: LIVING PARTICLES (The Signature Ambient Effect)
+# AMBIENT PARTICLES
 # =====================================================
+
 st.markdown("""
 <canvas id="driveCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; opacity:0.6;"></canvas>
 <script>
@@ -1404,7 +1204,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # =====================================================
-# FOOTER – SIGNATURE MANTRA
+# FOOTER
 # =====================================================
 
 st.markdown("""
