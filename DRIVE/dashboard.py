@@ -850,6 +850,86 @@ with col_chart:
     )
 
 # =====================================================
+# HEATMAP – SCROLLABLE (using st.components.v1.html)
+# =====================================================
+
+st.markdown("""
+<div style="margin: 40px 0 10px;">
+    <div class="section-title"><i class="fas fa-fire"></i> Dengue Heatmap</div>
+    <div class="section-desc">Visual intensity of predicted cases. <i class="fas fa-arrows-left-right" style="color:#2DD4BF;"></i> Swipe left/right on mobile.</div>
+</div>
+""", unsafe_allow_html=True)
+
+heatmap_type = st.selectbox(
+    "Select Heatmap Type",
+    ["Predicted Cases", "Risk Level"],
+    key="heatmap_type"
+)
+
+heat = predictions.copy()
+
+if heatmap_type == "Predicted Cases":
+    pivot = heat.pivot(index="Barangay", columns="YearMonth", values="Predicted_Cases")
+    fig = px.imshow(
+        pivot,
+        text_auto=True,
+        color_continuous_scale=["#00F0FF", "#2DD4BF", "#A855F7", "#FF006E"],
+        aspect="equal",
+        labels=dict(x="Month", y="Barangay", color="Cases")
+    )
+else:
+    heat["Risk_Value"] = heat["Risk_Level"].map(risk_values)
+    pivot = heat.pivot(index="Barangay", columns="YearMonth", values="Risk_Value")
+    fig = px.imshow(
+        pivot,
+        text_auto=True,
+        zmin=1, zmax=4,
+        color_continuous_scale=["#00F0FF", "#2DD4BF", "#A855F7", "#FF006E"],
+        aspect="equal",
+        labels=dict(x="Month", y="Barangay", color="Risk")
+    )
+    fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
+
+# Layout: fixed width and margins
+fig.update_layout(
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(color="#A0B8CC", size=11),
+    margin=dict(l=130, r=30, t=30, b=60),
+    width=1000,
+    autosize=False
+)
+
+# Generate HTML with scroll zoom disabled
+html_str = fig.to_html(
+    include_plotlyjs='cdn',
+    config={
+        'displayModeBar': False,
+        'responsive': False,
+        'scrollZoom': False,
+        'doubleClick': False,
+        'showTips': False
+    },
+    full_html=False,
+    default_width='1000px'
+)
+
+# Wrap in scrollable div
+scrollable_html = f"""
+<div style="
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    cursor: grab;
+">
+    {html_str}
+</div>
+"""
+
+st.components.v1.html(scrollable_html, height=520)
+
+# =====================================================
 # WHAT‑IF SIMULATION – Refined & Polished
 # =====================================================
 
@@ -867,7 +947,7 @@ st.markdown("""
 barangay = st.selectbox(
     "Select Barangay for Simulation",
     predictions["Barangay"].unique(),
-    key="sim_barangay_select"   # <-- Changed to unique key
+    key="sim_barangay_select"
 )
 
 # --- Get baseline data ---
@@ -1134,6 +1214,7 @@ with st.expander("📐 How the Simulation Works"):
     ### Limitations
     The simulation is heuristic and intended for scenario planning rather than precise prediction. The coefficients are based on estimated relationships between environmental factors and dengue transmission. Future work could calibrate these parameters using observational data.
     """)
+
 # =====================================================
 # AUTOMATED REPORT GENERATOR
 # =====================================================
