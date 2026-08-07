@@ -511,292 +511,6 @@ risk_values = {
 }
 
 # =====================================================
-# WHAT‑IF SIMULATION – Refined & Polished
-# =====================================================
-
-st.markdown("""
-<div style="padding:25px;margin-top:35px;">
-    <div class="section-title">🔮 What-If Simulation</div>
-    <div class="section-desc">
-        Explore how changes in environmental factors affect dengue risk.
-        Adjust the sliders below to see how predictions change in real-time.
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# --- Select Barangay (UNIQUE KEY) ---
-barangay = st.selectbox(
-    "Select Barangay for Simulation",
-    predictions["Barangay"].unique(),
-    key="sim_barangay_select"   # <-- Changed to unique key
-)
-
-# --- Get baseline data ---
-base = predictions[predictions["Barangay"] == barangay].iloc[0]
-
-# --- Display Baseline ---
-col_base1, col_base2, col_base3 = st.columns(3)
-with col_base1:
-    st.metric("📊 Baseline Cases", f"{base['Predicted_Cases']:.0f}")
-with col_base2:
-    st.metric("📈 Risk Level", base['Risk_Level'])
-with col_base3:
-    st.metric("📅 Peak Month", base['YearMonth'])
-
-st.markdown("---")
-
-# --- Environmental Sliders ---
-st.markdown("#### 🌡️ Adjust Environmental Factors")
-
-col_s1, col_s2, col_s3 = st.columns(3)
-
-with col_s1:
-    rainfall = st.slider(
-        "🌧️ Rainfall Change (%)",
-        -50, 100, 0,
-        key="rainfall_sim",
-        help="Rainfall increases mosquito breeding sites"
-    )
-    
-    humidity = st.slider(
-        "💧 Humidity Change (%)",
-        -50, 100, 0,
-        key="humidity_sim",
-        help="Higher humidity increases mosquito survival"
-    )
-
-with col_s2:
-    temperature = st.slider(
-        "🌡️ Temperature Change (%)",
-        -20, 50, 0,
-        key="temp_sim",
-        help="Warmer temperatures accelerate virus development"
-    )
-    
-    wind = st.slider(
-        "🌬️ Wind Speed Change (%)",
-        -50, 50, 0,
-        key="wind_sim",
-        help="Stronger winds disperse mosquitoes"
-    )
-
-with col_s3:
-    season = st.slider(
-        "📅 Seasonality Factor",
-        0.5, 2.0, 1.0, 0.1,
-        key="season_sim",
-        help="1.0 = normal seasonal pattern"
-    )
-
-st.caption("Adjust sliders to see how each factor changes the prediction.")
-
-# --- Simulation Function ---
-def simulate_cases(base_cases, rainfall_pct, humidity_pct, temp_pct, wind_pct, season_factor):
-    """
-    Simulates dengue cases using heuristic multipliers based on environmental factors.
-    """
-    multiplier = 1.0
-    
-    if rainfall_pct > 0:
-        rainfall_effect = 1 + (rainfall_pct / 100) * 1.2
-    else:
-        rainfall_effect = 1 + (rainfall_pct / 100) * 0.8
-    multiplier *= rainfall_effect
-    
-    humidity_effect = 1 + (humidity_pct / 100) * 0.7
-    multiplier *= humidity_effect
-    
-    if rainfall_pct > 20 and humidity_pct > 20:
-        synergy = 1 + ((rainfall_pct + humidity_pct) / 200) * 0.3
-        multiplier *= synergy
-    
-    temp_effect = 1 + (temp_pct / 100) * 0.5
-    multiplier *= temp_effect
-    
-    wind_effect = 1 - (wind_pct / 100) * 0.3
-    wind_effect = max(0.7, wind_effect)
-    multiplier *= wind_effect
-    
-    multiplier *= season_factor
-    
-    simulated = base_cases * multiplier
-    return max(0, round(simulated)), multiplier
-
-# --- Run Simulation ---
-sim_cases, total_multiplier = simulate_cases(
-    base["Predicted_Cases"],
-    rainfall,
-    humidity,
-    temperature,
-    wind,
-    season
-)
-
-sim_risk = classify_risk_4level(
-    sim_cases,
-    base["Historical_Mean"],
-    base["Historical_SD"],
-)
-
-# --- Results ---
-st.markdown("---")
-st.markdown("#### 📊 Simulation Results")
-
-col_r1, col_r2, col_r3, col_r4 = st.columns(4)
-
-with col_r1:
-    st.metric(
-        "🦟 Simulated Cases",
-        f"{sim_cases:.0f}",
-        delta=f"{sim_cases - base['Predicted_Cases']:+.0f}",
-        delta_color="normal"
-    )
-
-with col_r2:
-    st.metric(
-        "⚠️ Risk Level",
-        sim_risk
-    )
-
-with col_r3:
-    st.metric(
-        "📈 Change (%)",
-        f"{((sim_cases - base['Predicted_Cases']) / base['Predicted_Cases'] * 100):+.1f}%"
-    )
-
-with col_r4:
-    st.metric(
-        "🔢 Multiplier",
-        f"{total_multiplier:.2f}x"
-    )
-
-# --- Breakdown ---
-st.markdown("#### 🔍 Factor Breakdown")
-
-col_b1, col_b2 = st.columns(2)
-
-with col_b1:
-    st.markdown("**📈 Factors That Increased Risk**")
-    factors_up = []
-    if rainfall > 0:
-        factors_up.append(f"🌧️ Rainfall +{rainfall}%")
-    if humidity > 0:
-        factors_up.append(f"💧 Humidity +{humidity}%")
-    if temperature > 0:
-        factors_up.append(f"🌡️ Temperature +{temperature}%")
-    if season > 1.0:
-        factors_up.append(f"📅 Seasonality +{int((season-1)*100)}%")
-    if rainfall > 20 and humidity > 20:
-        factors_up.append(f"🤝 Synergy Bonus Applied")
-    if factors_up:
-        for f in factors_up:
-            st.success(f"✓ {f}")
-    else:
-        st.info("No increases applied")
-
-with col_b2:
-    st.markdown("**📉 Factors That Decreased Risk**")
-    factors_down = []
-    if rainfall < 0:
-        factors_down.append(f"🌧️ Rainfall {rainfall}%")
-    if humidity < 0:
-        factors_down.append(f"💧 Humidity {humidity}%")
-    if temperature < 0:
-        factors_down.append(f"🌡️ Temperature {temperature}%")
-    if wind > 0:
-        factors_down.append(f"🌬️ Wind +{wind}% (dampener)")
-    if wind < 0:
-        factors_down.append(f"🌬️ Wind {wind}% (less dampening)")
-    if season < 1.0:
-        factors_down.append(f"📅 Seasonality -{int((1-season)*100)}%")
-    if factors_down:
-        for f in factors_down:
-            st.warning(f"⬇ {f}")
-    else:
-        st.info("No decreases applied")
-
-# --- Comparison Chart ---
-st.markdown("#### 📈 Impact Across All Months")
-
-barangay_data = predictions[predictions["Barangay"] == barangay].sort_values("YearMonth")
-simulated_months = barangay_data.copy()
-simulated_months["Simulated_Cases"] = simulated_months["Predicted_Cases"] * total_multiplier
-simulated_months["Simulated_Cases"] = simulated_months["Simulated_Cases"].round(0).astype(int)
-
-fig_sim = px.line(
-    simulated_months,
-    x="YearMonth",
-    y=["Predicted_Cases", "Simulated_Cases"],
-    labels={"value": "Cases", "YearMonth": "Month", "variable": "Scenario"},
-    title=f"Baseline vs. Simulated – {barangay}",
-    color_discrete_map={
-        "Predicted_Cases": "#3B82F6",
-        "Simulated_Cases": "#F59E0B"
-    }
-)
-
-fig_sim.update_traces(
-    mode='lines+markers',
-    line=dict(width=2.5),
-    marker=dict(size=8)
-)
-
-fig_sim.update_layout(
-    paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#CBD5E1"),
-    margin=dict(l=20, r=20, t=40, b=20),
-    height=350,
-    xaxis=dict(gridcolor="rgba(255,255,255,0.05)"),
-    yaxis=dict(gridcolor="rgba(255,255,255,0.05)"),
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="center",
-        x=0.5
-    )
-)
-
-st.plotly_chart(fig_sim, use_container_width=True)
-
-# --- Scientific Explanation Expander ---
-with st.expander("📐 How the Simulation Works"):
-    st.markdown("""
-    **This simulation applies heuristic multipliers to the baseline Random Forest predictions.**
-    
-    ### Equations
-    
-    **Rainfall Effect**  
-    $E_{rain} = 1 + \\frac{R}{100} \\times 1.2$ (if R > 0)  
-    $E_{rain} = 1 + \\frac{R}{100} \\times 0.8$ (if R ≤ 0)
-    
-    **Humidity Effect**  
-    $E_{hum} = 1 + \\frac{H}{100} \\times 0.7$
-    
-    **Rainfall-Humidity Synergy**  
-    $E_{syn} = 1 + \\frac{R + H}{200} \\times 0.3$ (if R > 20% and H > 20%)
-    
-    **Temperature Effect**  
-    $E_{temp} = 1 + \\frac{T}{100} \\times 0.5$
-    
-    **Wind Speed Effect**  
-    $E_{wind} = 1 - \\frac{W}{100} \\times 0.3$ (minimum 0.7)
-    
-    **Seasonality Effect**  
-    $E_{season} = S$
-    
-    **Final Multiplier**  
-    $M_{total} = E_{rain} \\times E_{hum} \\times E_{syn} \\times E_{temp} \\times E_{wind} \\times E_{season}$
-    
-    **Simulated Cases**  
-    $C_{sim} = \\max(0, \\text{round}(C_{base} \\times M_{total}))$
-    
-    ### Limitations
-    The simulation is heuristic and intended for scenario planning rather than precise prediction. The coefficients are based on estimated relationships between environmental factors and dengue transmission. Future work could calibrate these parameters using observational data.
-    """)
-
-# =====================================================
 # PDF REPORT GENERATOR
 # =====================================================
 
@@ -1136,129 +850,124 @@ with col_chart:
     )
 
 # =====================================================
-# HEATMAP – SCROLLABLE
-# =====================================================
-
-st.markdown("""
-<div style="margin: 40px 0 10px;">
-    <div class="section-title"><i class="fas fa-fire"></i> Dengue Heatmap</div>
-    <div class="section-desc"><i class="fas fa-arrows-left-right"></i> Visual intensity. Swipe left/right on mobile.</div>
-</div>
-""", unsafe_allow_html=True)
-
-heatmap_type = st.selectbox(
-    "Select Heatmap Type",
-    ["Predicted Cases", "Risk Level"],
-    key="heatmap_type"
-)
-
-heat = predictions.copy()
-
-if heatmap_type == "Predicted Cases":
-    pivot = heat.pivot(index="Barangay", columns="YearMonth", values="Predicted_Cases")
-    fig = px.imshow(
-        pivot,
-        text_auto=True,
-        color_continuous_scale=["#00F0FF", "#2DD4BF", "#A855F7", "#FF006E"],
-        aspect="equal",
-        labels=dict(x="Month", y="Barangay", color="Cases")
-    )
-else:
-    heat["Risk_Value"] = heat["Risk_Level"].map(risk_values)
-    pivot = heat.pivot(index="Barangay", columns="YearMonth", values="Risk_Value")
-    fig = px.imshow(
-        pivot,
-        text_auto=True,
-        zmin=1, zmax=4,
-        color_continuous_scale=["#00F0FF", "#2DD4BF", "#A855F7", "#FF006E"],
-        aspect="equal",
-        labels=dict(x="Month", y="Barangay", color="Risk")
-    )
-    fig.update_coloraxes(colorbar=dict(tickvals=[1,2,3,4], ticktext=["Safe","Moderate","High","Extreme"]))
-
-fig.update_layout(
-    paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#A0B8CC", size=11, family="Inter"),
-    margin=dict(l=130, r=30, t=30, b=60),
-    width=1000,
-    autosize=False
-)
-
-html_str = fig.to_html(
-    include_plotlyjs='cdn',
-    config={
-        'displayModeBar': False,
-        'responsive': False,
-        'scrollZoom': False,
-        'doubleClick': False,
-        'showTips': False
-    },
-    full_html=False,
-    default_width='1000px'
-)
-
-scrollable_html = f"""
-<div style="
-    overflow-x: auto;
-    width: 100%;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
-    cursor: grab;
-    border: 1px solid rgba(0,240,255,0.05);
-    border-radius: 20px;
-">
-    {html_str}
-</div>
-"""
-st.components.v1.html(scrollable_html, height=520)
-
-# =====================================================
-# WHAT‑IF SIMULATION
+# WHAT‑IF SIMULATION – Refined & Polished
 # =====================================================
 
 st.markdown("""
 <div style="padding:25px;margin-top:35px;">
-    <div class="section-title"><i class="fas fa-microscope"></i> What-If Simulation</div>
+    <div class="section-title">🔮 What-If Simulation</div>
     <div class="section-desc">
-        <i class="fas fa-sliders" style="color:#2DD4BF;"></i> Adjust environmental conditions to examine their potential effects on predicted dengue cases.
-        This is a sensitivity analysis based on the model's baseline predictions.
+        Explore how changes in environmental factors affect dengue risk.
+        Adjust the sliders below to see how predictions change in real-time.
     </div>
 </div>
 """, unsafe_allow_html=True)
 
+# --- Select Barangay (UNIQUE KEY) ---
 barangay = st.selectbox(
-    "Select Barangay",
+    "Select Barangay for Simulation",
     predictions["Barangay"].unique(),
-    key="sim_barangay"
+    key="sim_barangay_select"   # <-- Changed to unique key
 )
 
+# --- Get baseline data ---
 base = predictions[predictions["Barangay"] == barangay].iloc[0]
 
-col1, col2 = st.columns(2)
+# --- Display Baseline ---
+col_base1, col_base2, col_base3 = st.columns(3)
+with col_base1:
+    st.metric("📊 Baseline Cases", f"{base['Predicted_Cases']:.0f}")
+with col_base2:
+    st.metric("📈 Risk Level", base['Risk_Level'])
+with col_base3:
+    st.metric("📅 Peak Month", base['YearMonth'])
 
-with col1:
-    rainfall = st.slider("🌧 Rainfall Change (%)", -50, 100, 0)
-    humidity = st.slider("💧 Humidity Change (%)", -50, 100, 0)
+st.markdown("---")
 
-with col2:
-    temperature = st.slider("🌡 Temperature Change (%)", -20, 50, 0)
-    wind = st.slider("🌬 Wind Speed Change (%)", -50, 50, 0)
+# --- Environmental Sliders ---
+st.markdown("#### 🌡️ Adjust Environmental Factors")
 
-season = st.slider(
-    "🗓 Seasonality Factor",
-    0.5,
-    2.0,
-    1.0,
-    step=0.1
-)
+col_s1, col_s2, col_s3 = st.columns(3)
 
-sim_cases = simulate_cases(
+with col_s1:
+    rainfall = st.slider(
+        "🌧️ Rainfall Change (%)",
+        -50, 100, 0,
+        key="rainfall_sim",
+        help="Rainfall increases mosquito breeding sites"
+    )
+    
+    humidity = st.slider(
+        "💧 Humidity Change (%)",
+        -50, 100, 0,
+        key="humidity_sim",
+        help="Higher humidity increases mosquito survival"
+    )
+
+with col_s2:
+    temperature = st.slider(
+        "🌡️ Temperature Change (%)",
+        -20, 50, 0,
+        key="temp_sim",
+        help="Warmer temperatures accelerate virus development"
+    )
+    
+    wind = st.slider(
+        "🌬️ Wind Speed Change (%)",
+        -50, 50, 0,
+        key="wind_sim",
+        help="Stronger winds disperse mosquitoes"
+    )
+
+with col_s3:
+    season = st.slider(
+        "📅 Seasonality Factor",
+        0.5, 2.0, 1.0, 0.1,
+        key="season_sim",
+        help="1.0 = normal seasonal pattern"
+    )
+
+st.caption("Adjust sliders to see how each factor changes the prediction.")
+
+# --- Simulation Function ---
+def simulate_cases(base_cases, rainfall_pct, humidity_pct, temp_pct, wind_pct, season_factor):
+    """
+    Simulates dengue cases using heuristic multipliers based on environmental factors.
+    """
+    multiplier = 1.0
+    
+    if rainfall_pct > 0:
+        rainfall_effect = 1 + (rainfall_pct / 100) * 1.2
+    else:
+        rainfall_effect = 1 + (rainfall_pct / 100) * 0.8
+    multiplier *= rainfall_effect
+    
+    humidity_effect = 1 + (humidity_pct / 100) * 0.7
+    multiplier *= humidity_effect
+    
+    if rainfall_pct > 20 and humidity_pct > 20:
+        synergy = 1 + ((rainfall_pct + humidity_pct) / 200) * 0.3
+        multiplier *= synergy
+    
+    temp_effect = 1 + (temp_pct / 100) * 0.5
+    multiplier *= temp_effect
+    
+    wind_effect = 1 - (wind_pct / 100) * 0.3
+    wind_effect = max(0.7, wind_effect)
+    multiplier *= wind_effect
+    
+    multiplier *= season_factor
+    
+    simulated = base_cases * multiplier
+    return max(0, round(simulated)), multiplier
+
+# --- Run Simulation ---
+sim_cases, total_multiplier = simulate_cases(
     base["Predicted_Cases"],
-    rainfall / 100,
-    humidity / 100,
-    temperature / 100,
-    wind / 100,
+    rainfall,
+    humidity,
+    temperature,
+    wind,
     season
 )
 
@@ -1268,13 +977,163 @@ sim_risk = classify_risk_4level(
     base["Historical_SD"],
 )
 
-st.markdown("<br>", unsafe_allow_html=True)
+# --- Results ---
+st.markdown("---")
+st.markdown("#### 📊 Simulation Results")
 
-m1, m2, m3 = st.columns(3)
-m1.metric("🦟 Simulated Cases", f"{sim_cases:.0f}")
-m2.metric("⚠ Risk Level", sim_risk)
-m3.metric("📈 Case Difference", f"{sim_cases - base['Predicted_Cases']:+.0f}")
+col_r1, col_r2, col_r3, col_r4 = st.columns(4)
 
+with col_r1:
+    st.metric(
+        "🦟 Simulated Cases",
+        f"{sim_cases:.0f}",
+        delta=f"{sim_cases - base['Predicted_Cases']:+.0f}",
+        delta_color="normal"
+    )
+
+with col_r2:
+    st.metric(
+        "⚠️ Risk Level",
+        sim_risk
+    )
+
+with col_r3:
+    st.metric(
+        "📈 Change (%)",
+        f"{((sim_cases - base['Predicted_Cases']) / base['Predicted_Cases'] * 100):+.1f}%"
+    )
+
+with col_r4:
+    st.metric(
+        "🔢 Multiplier",
+        f"{total_multiplier:.2f}x"
+    )
+
+# --- Breakdown ---
+st.markdown("#### 🔍 Factor Breakdown")
+
+col_b1, col_b2 = st.columns(2)
+
+with col_b1:
+    st.markdown("**📈 Factors That Increased Risk**")
+    factors_up = []
+    if rainfall > 0:
+        factors_up.append(f"🌧️ Rainfall +{rainfall}%")
+    if humidity > 0:
+        factors_up.append(f"💧 Humidity +{humidity}%")
+    if temperature > 0:
+        factors_up.append(f"🌡️ Temperature +{temperature}%")
+    if season > 1.0:
+        factors_up.append(f"📅 Seasonality +{int((season-1)*100)}%")
+    if rainfall > 20 and humidity > 20:
+        factors_up.append(f"🤝 Synergy Bonus Applied")
+    if factors_up:
+        for f in factors_up:
+            st.success(f"✓ {f}")
+    else:
+        st.info("No increases applied")
+
+with col_b2:
+    st.markdown("**📉 Factors That Decreased Risk**")
+    factors_down = []
+    if rainfall < 0:
+        factors_down.append(f"🌧️ Rainfall {rainfall}%")
+    if humidity < 0:
+        factors_down.append(f"💧 Humidity {humidity}%")
+    if temperature < 0:
+        factors_down.append(f"🌡️ Temperature {temperature}%")
+    if wind > 0:
+        factors_down.append(f"🌬️ Wind +{wind}% (dampener)")
+    if wind < 0:
+        factors_down.append(f"🌬️ Wind {wind}% (less dampening)")
+    if season < 1.0:
+        factors_down.append(f"📅 Seasonality -{int((1-season)*100)}%")
+    if factors_down:
+        for f in factors_down:
+            st.warning(f"⬇ {f}")
+    else:
+        st.info("No decreases applied")
+
+# --- Comparison Chart ---
+st.markdown("#### 📈 Impact Across All Months")
+
+barangay_data = predictions[predictions["Barangay"] == barangay].sort_values("YearMonth")
+simulated_months = barangay_data.copy()
+simulated_months["Simulated_Cases"] = simulated_months["Predicted_Cases"] * total_multiplier
+simulated_months["Simulated_Cases"] = simulated_months["Simulated_Cases"].round(0).astype(int)
+
+fig_sim = px.line(
+    simulated_months,
+    x="YearMonth",
+    y=["Predicted_Cases", "Simulated_Cases"],
+    labels={"value": "Cases", "YearMonth": "Month", "variable": "Scenario"},
+    title=f"Baseline vs. Simulated – {barangay}",
+    color_discrete_map={
+        "Predicted_Cases": "#3B82F6",
+        "Simulated_Cases": "#F59E0B"
+    }
+)
+
+fig_sim.update_traces(
+    mode='lines+markers',
+    line=dict(width=2.5),
+    marker=dict(size=8)
+)
+
+fig_sim.update_layout(
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(color="#CBD5E1"),
+    margin=dict(l=20, r=20, t=40, b=20),
+    height=350,
+    xaxis=dict(gridcolor="rgba(255,255,255,0.05)"),
+    yaxis=dict(gridcolor="rgba(255,255,255,0.05)"),
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="center",
+        x=0.5
+    )
+)
+
+st.plotly_chart(fig_sim, use_container_width=True)
+
+# --- Scientific Explanation Expander ---
+with st.expander("📐 How the Simulation Works"):
+    st.markdown("""
+    **This simulation applies heuristic multipliers to the baseline Random Forest predictions.**
+    
+    ### Equations
+    
+    **Rainfall Effect**  
+    $E_{rain} = 1 + \\frac{R}{100} \\times 1.2$ (if R > 0)  
+    $E_{rain} = 1 + \\frac{R}{100} \\times 0.8$ (if R ≤ 0)
+    
+    **Humidity Effect**  
+    $E_{hum} = 1 + \\frac{H}{100} \\times 0.7$
+    
+    **Rainfall-Humidity Synergy**  
+    $E_{syn} = 1 + \\frac{R + H}{200} \\times 0.3$ (if R > 20% and H > 20%)
+    
+    **Temperature Effect**  
+    $E_{temp} = 1 + \\frac{T}{100} \\times 0.5$
+    
+    **Wind Speed Effect**  
+    $E_{wind} = 1 - \\frac{W}{100} \\times 0.3$ (minimum 0.7)
+    
+    **Seasonality Effect**  
+    $E_{season} = S$
+    
+    **Final Multiplier**  
+    $M_{total} = E_{rain} \\times E_{hum} \\times E_{syn} \\times E_{temp} \\times E_{wind} \\times E_{season}$
+    
+    **Simulated Cases**  
+    $C_{sim} = \\max(0, \\text{round}(C_{base} \\times M_{total}))$
+    
+    ### Limitations
+    The simulation is heuristic and intended for scenario planning rather than precise prediction. The coefficients are based on estimated relationships between environmental factors and dengue transmission. Future work could calibrate these parameters using observational data.
+    """)
 # =====================================================
 # AUTOMATED REPORT GENERATOR
 # =====================================================
