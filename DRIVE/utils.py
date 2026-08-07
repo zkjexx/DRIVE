@@ -28,14 +28,6 @@ def classify_risk_4level(cases, mu, sigma):
     """
     Classify dengue risk into 4 levels based on historical mean (mu)
     and standard deviation (sigma).
-    
-    Parameters:
-        cases (float or int): Predicted cases (or upper bound)
-        mu (float): Historical mean cases
-        sigma (float): Historical standard deviation
-    
-    Returns:
-        str: 'Safe', 'Moderate', 'High', or 'Extreme'
     """
     if cases < mu:
         return "Safe"
@@ -63,16 +55,11 @@ def compute_historical_stats(df):
 # =====================================================
 
 def calculate_prediction_coverage(actual, lower, upper):
-    """
-    Calculates percentage of actual values inside prediction interval.
-    """
     actual = np.array(actual)
     lower = np.array(lower)
     upper = np.array(upper)
-    
     covered = (actual >= lower) & (actual <= upper)
     coverage = (covered.sum() / len(actual)) * 100
-    
     return round(coverage, 2)
 
 # =====================================================
@@ -80,17 +67,12 @@ def calculate_prediction_coverage(actual, lower, upper):
 # =====================================================
 
 def baseline_comparison(actual, predicted):
-    """
-    Compares Random Forest prediction against mean baseline.
-    """
     actual = np.array(actual)
     predicted = np.array(predicted)
-    
     model_mae = np.mean(np.abs(actual - predicted))
     baseline_value = np.mean(actual)
     baseline_prediction = np.full(len(actual), baseline_value)
     baseline_mae = np.mean(np.abs(actual - baseline_prediction))
-    
     return {
         "Model_MAE": round(model_mae, 2),
         "Baseline_MAE": round(baseline_mae, 2),
